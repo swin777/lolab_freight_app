@@ -31,7 +31,7 @@ class Freight extends StatelessWidget {
                     return GestureDetector(
                       onTap: () async{
                         await showDialog<String>(
-                          barrierColor: const Color(0xcc606060),
+                          barrierColor: const Color(0xffedf0f5),
                           context: context,
                           builder: (context) => FreightDetailDialog()
                         );
@@ -44,14 +44,14 @@ class Freight extends StatelessWidget {
               ),
             ],
           ),
-          new Positioned(
-            bottom: 12,
-            right: 8,
-            child: Container(
+          Positioned(
+            bottom: 8,
+            right: 0,
+            child: SizedBox(
               height: 50,
-              child: new FloatingActionButton(
+              child: MaterialButton(
                 onPressed: () {},
-                child: new Icon(Icons.refresh),
+                child: Image.asset("assets/images/btn_floating_refresh.png")//const Icon(Icons.refresh), //btn_floating_refresh
               ),
             ),
           ),

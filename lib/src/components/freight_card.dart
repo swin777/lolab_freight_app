@@ -13,9 +13,64 @@ class FreightCard extends StatelessWidget {
         elevation: 0,
         color: Colors.white,
         padding: const EdgeInsets.all(0),
-        child: const Icon(Icons.bookmark_border, size: 20),
+        child: Image.asset('assets/images/bookmark_off.png', width: 20, height: 20,), //bookmark_off
         onPressed: () {},
       ),
+    );
+  }
+
+  Widget _freightInfo(BuildContext context){
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xff60acff),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.all(2),
+                child: const Text('상차', style: TextStyle(color: Colors.white, fontSize: 14),),
+              ),
+              const SizedBox(height: 4,),
+              Text('오늘 10:30 405km', style: Theme.of(context).textTheme.caption,),
+              const SizedBox(height: 4,),
+              Text('서울 서초 강남대로 43길 강남빌딩 B동 102호', style: Theme.of(context).textTheme.bodyText1, overflow:TextOverflow.ellipsis),
+            ],
+          )
+        ),
+        Container(
+          padding: EdgeInsets.only(top:20),
+          width: 34,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Image.asset('assets/images/two_arrow.png', width: 22, height: 22)
+          ),
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color(0xff2a3f85),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                padding: const EdgeInsets.all(2),
+                child: const Text('하차', style: TextStyle(color: Colors.white, fontSize: 14),),
+              ),
+              const SizedBox(height: 4,),
+              Text('오늘 14:30', style: Theme.of(context).textTheme.caption,),
+              const SizedBox(height: 4,),
+              Text('부산 해운대구 해운대로 213길 롯데빌딩 EAST 2308호', style: Theme.of(context).textTheme.bodyText1, overflow:TextOverflow.ellipsis),
+            ],
+          )
+        ),
+      ],
     );
   }
 
@@ -36,61 +91,44 @@ class FreightCard extends StatelessWidget {
             padding: const EdgeInsets.only(left: 12, right: 12, top:12, bottom: 12),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xff60acff),
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            padding: const EdgeInsets.all(2),
-                            child: const Text('상차', style: TextStyle(color: Colors.white, fontSize: 14),),
-                          ),
-                          const SizedBox(height: 4,),
-                          Text('오늘 10:30 405km', style: Theme.of(context).textTheme.caption,),
-                          const SizedBox(height: 4,),
-                          Text('서울 서초 강남대로', style: Theme.of(context).textTheme.bodyText1,),
-                        ],
-                      )
-                    ),
-                    const SizedBox(
-                      width: 34,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Icon(Icons.keyboard_arrow_right_outlined, color: Colors.blueGrey, size: 24,)
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xff2a3f85),
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            padding: const EdgeInsets.all(2),
-                            child: const Text('하차', style: TextStyle(color: Colors.white, fontSize: 14),),
-                          ),
-                          const SizedBox(height: 4,),
-                          Text('오늘 14:30', style: Theme.of(context).textTheme.caption,),
-                          const SizedBox(height: 4,),
-                          Text('부산 해운대 해운로', style: Theme.of(context).textTheme.bodyText1,),
-                        ],
-                      )
-                    ),
-                  ],
-                ),
+                _freightInfo(context),
                 line(),
                 Container(
                   width: width2,
-                  child: Text('10만원 | 수>지 | 축차, 리프트, 냉장', style: Theme.of(context).textTheme.bodyText2,)
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xffeef4fb),
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            padding: const EdgeInsets.all(2),
+                            child: const Text('수 > 지', style: TextStyle(color: Color(0xff2a3f85), fontSize: 12),),
+                          ),
+                          const SizedBox(width: 4,),
+                          Text('축차', style: Theme.of(context).textTheme.caption,),
+                          const SizedBox(width: 4,),
+                          Image.asset("assets/images/img_line_12.png"),
+                          const SizedBox(width: 4,),
+                          Text('리프트', style: Theme.of(context).textTheme.caption,),
+                          const SizedBox(width: 4,),
+                          Image.asset("assets/images/img_line_12.png"),
+                          const SizedBox(width: 4,),
+                          Text('냉장', style: Theme.of(context).textTheme.caption,),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('251,000', style: Theme.of(context).textTheme.headline6,),
+                          Text('원', style: Theme.of(context).textTheme.caption,),
+                        ],
+                      )
+                    ],
+                  )
                 ),
               ]
             ),

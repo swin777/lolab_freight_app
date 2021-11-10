@@ -13,7 +13,9 @@ class FreightDetailDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: const EdgeInsets.all(12),
+      elevation: 0,
+      insetPadding: const EdgeInsets.all(0),
+      
       backgroundColor: Colors.transparent,
       //child:FreightDetailInfo(close: close, parentContext:context)
       child: SizedBox(

@@ -70,6 +70,9 @@ class MyApp extends StatelessWidget {
           caption: TextStyle(
             color: Color(0xff606060), fontWeight: FontWeight.bold, fontSize: 14
           ),
+          headline6: TextStyle(
+            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16
+          ),
         )
       ),
       initialBinding: InitBinding(),

@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
-Widget line() {
+Widget line({double horizontal=0}) {
   return Container(
     height: 1,
-    margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+    margin: EdgeInsets.symmetric(horizontal: horizontal, vertical: 8),
     color: Colors.grey.withOpacity(0.2),
+  );
+}
+
+Widget verticalLine(){
+  return Container(
+    width: 1,
+    height: double.maxFinite,
+    color: Color(0xffd3dadf)
   );
 }
