@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lolab_freight_app/src/components/freight_appbar.dart';
-import 'package:lolab_freight_app/src/components/freight_card.dart';
-import 'package:lolab_freight_app/src/components/detail/freight_detail_dialog.dart';
+import 'package:lolab_freight_app/src/components/freight/detail/freight_config.dart';
+import 'package:lolab_freight_app/src/components/freight/freight_appbar.dart';
+import 'package:lolab_freight_app/src/components/freight/freight_card.dart';
+import 'package:lolab_freight_app/src/components/freight/detail/freight_detail_dialog.dart';
 import 'package:lolab_freight_app/src/controller/home_controller.dart';
 
 class Freight extends StatelessWidget {
   Freight({Key? key}) : super(key: key);
 
   final HomeController controller = Get.put(HomeController());
+
+  Future goConfig(BuildContext context){
+    return showDialog<String>(
+      barrierColor: const Color(0xffedf0f5),
+      context: context,
+      builder: (context) => FreightConfigDialog()
+    );
+  }
+
+  Future goFreightDetail(BuildContext context){
+    return showDialog<String>(
+      barrierColor: const Color(0xffedf0f5),
+      context: context,
+      builder: (context) => FreightDetailDialog()
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +36,7 @@ class Freight extends StatelessWidget {
             controller: controller.scrollController,
             slivers: [
               SliverAppBar(
-                flexibleSpace: FreightAppBar(),
+                flexibleSpace: FreightAppBar(configCallback:goConfig),
                 floating: true,
                 snap: true,
                 expandedHeight: 165,
@@ -30,11 +47,7 @@ class Freight extends StatelessWidget {
                   (context, index){
                     return GestureDetector(
                       onTap: () async{
-                        await showDialog<String>(
-                          barrierColor: const Color(0xffedf0f5),
-                          context: context,
-                          builder: (context) => FreightDetailDialog()
-                        );
+                        await goFreightDetail(context);
                       },
                       child: FreightCard(index:index))
                     ;

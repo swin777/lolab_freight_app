@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lolab_freight_app/src/components/detail/freight_detail_info.dart';
-import 'package:lolab_freight_app/src/components/detail/freight_posion_map.dart';
 import 'package:page_transition/page_transition.dart';
+import 'freight_detail_info.dart';
+import 'freight_posion_map.dart';
 
 class FreightDetailDialog extends StatelessWidget {
   const FreightDetailDialog({Key? key}) : super(key: key);
@@ -15,11 +15,11 @@ class FreightDetailDialog extends StatelessWidget {
     return Dialog(
       elevation: 0,
       insetPadding: const EdgeInsets.all(0),
-      
       backgroundColor: Colors.transparent,
       //child:FreightDetailInfo(close: close, parentContext:context)
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height - 240,
+      child: Container(
+        margin: const EdgeInsets.only(top: 20),
+        height: MediaQuery.of(context).size.height,
         child: Navigator(
           initialRoute: 'detail/info',
           onGenerateRoute: (RouteSettings settings) {

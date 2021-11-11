@@ -24,8 +24,8 @@ class FreightPostionMap extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          height: MediaQuery.of(context).size.height - 240,
-          margin: const EdgeInsets.only(top: 40.0),
+          //height: MediaQuery.of(context).size.height - 240,
+          margin: const EdgeInsets.only(top: 50.0, left: 12, right: 12),
           padding: EdgeInsets.all(2),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -55,7 +55,8 @@ class FreightPostionMap extends StatelessWidget {
           ),
         ),
         Positioned(
-          right: 8.0,
+          top:-5,
+          right: 12,
           child: GestureDetector(
             onTap: () {
               Navigator.of(context).pop();

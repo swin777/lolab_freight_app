@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lolab_freight_app/src/utils/util.dart';
 
-import 'customAdvancedCalendar/controller.dart';
-import 'customAdvancedCalendar/widget.dart';
+import '../customAdvancedCalendar/controller.dart';
+import '../customAdvancedCalendar/widget.dart';
 import 'package:lolab_freight_app/src/controller/home_controller.dart';
 
 
 class FreightAppBar extends StatelessWidget {
+  FreightAppBar({required this.configCallback});
+
   final HomeController controller = Get.put(HomeController());
   final AdvancedCalendarController _calendarControllerToday = AdvancedCalendarController.today();
   final List<DateTime> events = [
     //DateTime.utc(2021, 08, 10, 12),
     //DateTime.utc(2021, 08, 11, 12)
   ];
+
+  Function configCallback;
   
   List<Map<String, dynamic>> themaList = [
     {"name": "축차", "icon": Icon(Icons.add_box, size: 18)},
@@ -24,6 +28,7 @@ class FreightAppBar extends StatelessWidget {
   ];
 
   Widget _menuMark(BuildContext context) {
+    print(configCallback);
     return SizedBox(
       width: 34,
       child: MaterialButton(
@@ -32,7 +37,7 @@ class FreightAppBar extends StatelessWidget {
         color: Theme.of(context).appBarTheme.backgroundColor,
         padding: const EdgeInsets.all(0),
         child: Image.asset('assets/images/menu.png', width: 22, height: 22,),
-        onPressed: () {},
+        onPressed: () async{configCallback(context);},
       ),
     );
   }

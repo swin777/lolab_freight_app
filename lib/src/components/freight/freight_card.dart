@@ -36,7 +36,13 @@ class FreightCard extends StatelessWidget {
                 child: const Text('상차', style: TextStyle(color: Colors.white, fontSize: 14),),
               ),
               const SizedBox(height: 4,),
-              Text('오늘 10:30 405km', style: Theme.of(context).textTheme.caption,),
+              Row(
+                children: [
+                  Text('오늘 10:30', style: Theme.of(context).textTheme.caption,),
+                  SizedBox(width: 8,),
+                  Text('405km', style: Theme.of(context).textTheme.headline5,),
+                ],
+              ),
               const SizedBox(height: 4,),
               Text('서울 서초 강남대로 43길 강남빌딩 B동 102호', style: Theme.of(context).textTheme.bodyText1, overflow:TextOverflow.ellipsis),
             ],

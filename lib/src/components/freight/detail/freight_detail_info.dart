@@ -30,6 +30,7 @@ class FreightDetailInfo extends StatelessWidget {
   Widget gotoMapBtn(BuildContext context){
     return SizedBox(
       width: 34,
+      height: 34,
       child: MaterialButton(
         elevation: 0,
         color: Colors.white,
@@ -40,75 +41,19 @@ class FreightDetailInfo extends StatelessWidget {
     );
   }
 
+  Widget _confirmDialog(BuildContext context){
+    return Dialog(
+      elevation: 0,
+      insetPadding: const EdgeInsets.all(0),
+      //backgroundColor: Colors.transparent,
+      //child:FreightDetailInfo(close: close, parentContext:context)
+      child: Text("ssss")
+    );
+  }
+
   Widget dialogContent(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Container(
-          height: size.height - 240,
-          color: const Color(0xffedf0f5),
-        ),
-        Container(
-          height: size.height - 240,
-          margin: const EdgeInsets.only(top: 50.0, left: 12, right: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8.0),
-            boxShadow: const <BoxShadow>[
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 0.0,
-                offset: Offset(0.0, 0.0),
-              ),
-            ]
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                const SizedBox(height: 20.0),
-                freightContent(context),
-                const SizedBox(height: 20.0),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(4))
-                      ),
-                      textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-                    ),
-                    onPressed: () {},
-                    child: const Text('배차요청'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        // Positioned(
-        //   bottom: 0,
-        //   child: SizedBox(
-        //     height: 50,
-        //     width: size.width-24,
-        //     child: ElevatedButton(
-        //       style: ElevatedButton.styleFrom(
-        //         shape: const RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8))
-        //         ),
-        //         textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)
-        //       ),
-        //       onPressed: () {},
-        //       child: const Text('배차요청'),
-        //     ),
-        //   ),
-        // ),
-        Positioned(
-          top: 50,
-          right: 16,
-          child: _bookMark()
-        ),
         Positioned(
           top: -5,
           //right: 8.0,
@@ -138,7 +83,72 @@ class FreightDetailInfo extends StatelessWidget {
               ],
             ),
           )
-          
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 50.0, left: 12, right: 12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: const <BoxShadow>[
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 0.0,
+                offset: Offset(0.0, 0.0),
+              ),
+            ]
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const SizedBox(height: 10,),
+                freightContent(context),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4))
+                      ),
+                      textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                    ),
+                    onPressed: () async{
+                      await showDialog<String>(
+                        context: context,
+                        builder: (context) => _confirmDialog(context)
+                      );
+                    },
+                    child: const Text('배차요청'),
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+              ],
+            ),
+          ),
+        ),
+        // Positioned(
+        //   bottom: 0,
+        //   child: SizedBox(
+        //     height: 50,
+        //     width: size.width-24,
+        //     child: ElevatedButton(
+        //       style: ElevatedButton.styleFrom(
+        //         shape: const RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(8), bottomRight: Radius.circular(8))
+        //         ),
+        //         textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)
+        //       ),
+        //       onPressed: () {},
+        //       child: const Text('배차요청'),
+        //     ),
+        //   ),
+        // ),
+        Positioned(
+          top: 50,
+          right: 16,
+          child: _bookMark()
         ),
       ],
     );
@@ -165,7 +175,7 @@ class FreightDetailInfo extends StatelessWidget {
                 child: Row(
                   children: [
                     Text('오늘 10:30 ', style: Theme.of(context).textTheme.caption,),
-                    const Text('405km', style: TextStyle(color: Color(0xff600020), fontWeight: FontWeight.bold, fontSize: 14),),
+                    Text('405km', style: Theme.of(context).textTheme.headline5,),
                   ],
                 )
               ),
@@ -173,21 +183,26 @@ class FreightDetailInfo extends StatelessWidget {
             ],
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 width: 30,
-                height: 80,
+                height: 70,
                 child: Center(child: verticalLine()),
               ),
               Expanded(
                 child: Column(
                   children: [
-                    Text('서울 서초 강남대로 43길 강남빌딩 B동 102호', style: Theme.of(context).textTheme.headline3,),
+                    Row(
+                      children: [
+                        Expanded(child: Text('서울 서초 강남대로 43길 강남빌딩 B동 102호', style: Theme.of(context).textTheme.headline3,)),
+                        gotoMapBtn(context),
+                      ],
+                    ),
                     line(),
                   ],
-                )
-              ),
-              gotoMapBtn(context)
+                ),
+              )
             ],
           ),
           Row(
@@ -206,6 +221,7 @@ class FreightDetailInfo extends StatelessWidget {
             ],
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 width: 30,
@@ -217,7 +233,6 @@ class FreightDetailInfo extends StatelessWidget {
               gotoMapBtn(context)
             ],
           ),
-          const SizedBox(height: 10,),
           Container(
             decoration: BoxDecoration(
               color: const Color(0xfff2f4f7),
@@ -270,7 +285,7 @@ class FreightDetailInfo extends StatelessWidget {
               ],
             )
           ),
-          const SizedBox(height: 12,),
+          const SizedBox(height: 6,),
           Container(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,

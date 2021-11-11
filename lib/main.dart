@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     Widget example1 = SplashScreenView(
       navigateRoute: Container(),
       duration: 5000,
@@ -72,6 +74,9 @@ class MyApp extends StatelessWidget {
           ),
           headline6: TextStyle(
             color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16
+          ),
+          headline5: TextStyle(
+            color: Color(0xff2a3f85), fontWeight: FontWeight.bold, fontSize: 14
           ),
         )
       ),
