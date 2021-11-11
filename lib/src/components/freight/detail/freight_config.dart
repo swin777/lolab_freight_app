@@ -44,24 +44,31 @@ class FreightConfigDialog extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                ExpansionTile(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xffffffff),
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: ExpansionTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('화물 상차 지역'),
+                        Text('등록장소없음.'),
+                      ],
+                    ),
                     children: [
-                      Text('화물 상차 지역'),
-                      Text('등록장소없음.'),
+                      Column(
+                        children: [
+                          for (int i in [1,2,3,4,5])
+                            ListTile(
+                              title: Text("$i"),
+                            )
+                        ],
+                      )
                     ],
                   ),
-                  children: [
-                    Column(
-                      children: [
-                        for (int i in [1,2,3,4,5])
-                          ListTile(
-                            title: Text("$i"),
-                          )
-                      ],
-                    )
-                  ],
                 ),
                 SizedBox(height: 8,),
                 for (int i in [1,2,3,4,5,7,8,9,10,11,12,13,14,15])
