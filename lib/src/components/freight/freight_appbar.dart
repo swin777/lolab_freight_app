@@ -6,7 +6,6 @@ import '../customAdvancedCalendar/controller.dart';
 import '../customAdvancedCalendar/widget.dart';
 import 'package:lolab_freight_app/src/controller/freight_controller.dart';
 
-
 class FreightAppBar extends StatelessWidget {
   FreightAppBar({required this.configCallback});
 
@@ -18,7 +17,7 @@ class FreightAppBar extends StatelessWidget {
   ];
 
   Function configCallback;
-  
+
   List<Map<String, dynamic>> themaList = [
     {"name": "축차", "icon": Icon(Icons.add_box, size: 18)},
     {"name": "무진동", "icon": Icon(Icons.food_bank, size: 18)},
@@ -35,8 +34,14 @@ class FreightAppBar extends StatelessWidget {
         shape: const CircleBorder(),
         color: Theme.of(context).appBarTheme.backgroundColor,
         padding: const EdgeInsets.all(0),
-        child: Image.asset('assets/images/menu.png', width: 22, height: 22,),
-        onPressed: () async{configCallback(context);},
+        child: Image.asset(
+          'assets/images/menu.png',
+          width: 22,
+          height: 22,
+        ),
+        onPressed: () async {
+          configCallback(context);
+        },
       ),
     );
   }
@@ -49,7 +54,11 @@ class FreightAppBar extends StatelessWidget {
         shape: const CircleBorder(),
         color: Colors.grey,
         padding: const EdgeInsets.all(0),
-        child: const Icon(Icons.bookmark_border, size: 22, color: Colors.white,), 
+        child: const Icon(
+          Icons.bookmark_border,
+          size: 22,
+          color: Colors.white,
+        ),
         onPressed: () {},
       ),
     );
@@ -69,43 +78,65 @@ class FreightAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           CircleAvatar(
-            radius: 12.0,
-            backgroundColor: color, //Color(0xff696969),
-            child: Text(label, style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),)
+              radius: 12.0,
+              backgroundColor: color, //Color(0xff696969),
+              child: Text(
+                label,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              )),
+          SizedBox(
+            width: 6,
           ),
           const SizedBox(width: 6,),
           ButtonTheme(
             //alignedDropdown: true,
             child: DropdownButton(
-              //elevation: 2,
-              value: 10,
-              underline: Container(height: 0),
-              borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-              onChanged: (int? value) {},
-              items: [
-                DropdownMenuItem(
-                  value: 10,
-                  child: Container(
-                    child: const Text('주변10km', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),),
-                    color: Colors.white,
+                //elevation: 2,
+                value: 10,
+                underline: Container(height: 0),
+                borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+                onChanged: (int? value) {},
+                items: [
+                  DropdownMenuItem(
+                    value: 10,
+                    child: Container(
+                      child: const Text(
+                        '주변10km',
+                        style: TextStyle(
+                            color: Colors.blueAccent,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                DropdownMenuItem(
-                  value: 20,
-                  child: Container(
-                    child: const Text('주변20km', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),),
-                    color: Colors.white,
+                  DropdownMenuItem(
+                    value: 20,
+                    child: Container(
+                      child: const Text(
+                        '주변20km',
+                        style: TextStyle(
+                            color: Colors.blueAccent,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                DropdownMenuItem(
-                  value: 30,
-                  child: Container(
-                    child: const Text('주변30km', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),),
-                    color: Colors.white,
-                  ),
-                )
-              ]
-            ),
+                  DropdownMenuItem(
+                    value: 30,
+                    child: Container(
+                      child: const Text(
+                        '주변30km',
+                        style: TextStyle(
+                            color: Colors.blueAccent,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.white,
+                    ),
+                  )
+                ]),
           ),
         ],
       ),
@@ -123,7 +154,10 @@ class FreightAppBar extends StatelessWidget {
         onPressed: () {},
         child: Text(
           text,
-          style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold, fontSize: 16),
+          style: const TextStyle(
+              color: Colors.blueAccent,
+              fontWeight: FontWeight.bold,
+              fontSize: 16),
         ),
       ),
     );
@@ -174,4 +208,3 @@ class FreightAppBar extends StatelessWidget {
     );
   }
 }
-
