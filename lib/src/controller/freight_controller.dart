@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
-  static HomeController get to => Get.find();
+class FreightController extends GetxController {
+  static FreightController get to => Get.find();
   RxInt cnt = 50.obs;
   Rx<DateTime> dt = DateTime.now().obs;
   ScrollController scrollController = ScrollController();

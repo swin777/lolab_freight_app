@@ -19,14 +19,14 @@ class FreightCard extends StatelessWidget {
     );
   }
 
-  Widget _freightInfo(BuildContext context){
+  Widget _freightInfo(BuildContext context, {bool label=true}){
     return Row(
       children: [
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              label ? Container(
                 decoration: BoxDecoration(
                   color: const Color(0xff60acff),
                   shape: BoxShape.rectangle,
@@ -34,7 +34,7 @@ class FreightCard extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.all(2),
                 child: const Text('상차', style: TextStyle(color: Colors.white, fontSize: 14),),
-              ),
+              ):SizedBox(),
               const SizedBox(height: 4,),
               Row(
                 children: [
@@ -60,7 +60,7 @@ class FreightCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              label ? Container(
                 decoration: BoxDecoration(
                   color: const Color(0xff2a3f85),
                   shape: BoxShape.rectangle,
@@ -68,7 +68,7 @@ class FreightCard extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.all(2),
                 child: const Text('하차', style: TextStyle(color: Colors.white, fontSize: 14),),
-              ),
+              ):SizedBox(),
               const SizedBox(height: 4,),
               Text('오늘 14:30', style: Theme.of(context).textTheme.caption,),
               const SizedBox(height: 4,),
@@ -98,6 +98,8 @@ class FreightCard extends StatelessWidget {
             child: Column(
               children: [
                 _freightInfo(context),
+                // SizedBox(height: 8,),
+                // _freightInfo(context, label: false),
                 line(),
                 Container(
                   width: width2,
@@ -129,7 +131,7 @@ class FreightCard extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Text('251,000', style: Theme.of(context).textTheme.headline6,),
+                          Text('250,000', style: Theme.of(context).textTheme.headline6,),
                           Text('원', style: Theme.of(context).textTheme.caption,),
                         ],
                       )

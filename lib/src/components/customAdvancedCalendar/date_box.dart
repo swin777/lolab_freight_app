@@ -6,9 +6,9 @@ class DateBox extends StatelessWidget {
     Key? key,
     required this.child,
     this.color,
-    this.width = 24.0,
-    this.height = 24.0,
-    this.borderRadius = const BorderRadius.all(Radius.circular(8.0)),
+    this.width = 28.0,
+    this.height = 28.0,
+    this.borderRadius = const BorderRadius.all(Radius.circular(16.0)),
     this.onPressed,
   }) : super(key: key);
 
