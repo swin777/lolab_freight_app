@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class FreightPostionMap extends StatelessWidget {
@@ -24,8 +25,7 @@ class FreightPostionMap extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          //height: MediaQuery.of(context).size.height - 240,
-          margin: const EdgeInsets.only(top: 50.0, left: 12, right: 12),
+          margin: const EdgeInsets.only(left: 12, right: 12),
           padding: EdgeInsets.all(2),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -55,20 +55,13 @@ class FreightPostionMap extends StatelessWidget {
           ),
         ),
         Positioned(
-          top:-5,
-          right: 12,
+          top:14,
+          left: 14,
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              Get.back(id:1);
             },
-            child: const Align(
-              alignment: Alignment.topRight,
-              child: CircleAvatar(
-                radius: 20.0,
-                backgroundColor: Colors.transparent,
-                child: Icon(Icons.close, color: Colors.black, size: 40,),
-              ),
-            ),
+            child: const Icon(Icons.arrow_back_ios_rounded, color: Colors.black, size: 40,),
           ),
         ),
       ],

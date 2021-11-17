@@ -70,13 +70,13 @@ class MyApp extends StatelessWidget {
             color: Color(0xff606060), fontWeight: FontWeight.bold, fontSize: 16
           ),
           caption: TextStyle(
-            color: Color(0xff606060), fontWeight: FontWeight.bold, fontSize: 14
+            color: Color(0xff606060), fontWeight: FontWeight.bold, fontSize: 14,
           ),
           headline6: TextStyle(
             color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16
           ),
           headline5: TextStyle(
-            color: Color(0xff2a3f85), fontWeight: FontWeight.bold, fontSize: 14
+            color: Color(0xff2a3f85), fontWeight: FontWeight.bold, fontSize: 14,
           ),
         )
       ),

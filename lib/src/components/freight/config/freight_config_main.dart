@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:page_transition/page_transition.dart';
-import 'freight_detail_info.dart';
-import 'freight_posion_map.dart';
 
-class FreightDetailDialog extends StatelessWidget {
-  const FreightDetailDialog({Key? key}) : super(key: key);
+import 'freght_config_area.dart';
+import 'freight_config.dart';
+
+class FreightConfigMain extends StatelessWidget {
+  const FreightConfigMain({Key? key}) : super(key: key);
 
   void close(){
     Get.back();
@@ -22,18 +22,18 @@ class FreightDetailDialog extends StatelessWidget {
         margin: const EdgeInsets.only(top: 20),
         height: MediaQuery.of(context).size.height,
         child : Navigator(
-          key: Get.nestedKey(1), 
-          initialRoute:'detail/info',
+          key: Get.nestedKey(2), 
+          initialRoute:'config/info',
           onGenerateRoute: (RouteSettings settings) {
             switch (settings.name) {
-              case 'detail/info':
+              case 'config/info':
                 return GetPageRoute(
-                  page: () {return FreightDetailInfo(close: close); },
+                  page: () {return FreightConfig(close: close); },
                   transition: Transition.rightToLeft
                 );
-              case 'map':
+              case 'config/areaSelect':
                 return GetPageRoute(
-                  page: () {return FreightPostionMap(); },
+                  page: () {return FreightConfigArea(); },
                   transition: Transition.leftToRight
                 );
             }

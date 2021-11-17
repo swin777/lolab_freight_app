@@ -12,6 +12,6 @@ Widget verticalLine(){
   return Container(
     width: 1,
     height: double.maxFinite,
-    color: Color(0xffd3dadf)
+    color: const Color(0xffd3dadf)
   );
 }

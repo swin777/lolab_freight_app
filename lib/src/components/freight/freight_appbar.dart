@@ -4,14 +4,13 @@ import 'package:lolab_freight_app/src/utils/util.dart';
 
 import '../customAdvancedCalendar/controller.dart';
 import '../customAdvancedCalendar/widget.dart';
-import 'package:lolab_freight_app/src/controller/home_controller.dart';
+import 'package:lolab_freight_app/src/controller/freight_controller.dart';
 
 class FreightAppBar extends StatelessWidget {
   FreightAppBar({required this.configCallback});
 
-  final HomeController controller = Get.put(HomeController());
-  final AdvancedCalendarController _calendarControllerToday =
-      AdvancedCalendarController.today();
+  final FreightController controller = FreightController.to;
+  final AdvancedCalendarController _calendarControllerToday = AdvancedCalendarController.today();
   final List<DateTime> events = [
     //DateTime.utc(2021, 08, 10, 12),
     //DateTime.utc(2021, 08, 11, 12)
@@ -28,7 +27,6 @@ class FreightAppBar extends StatelessWidget {
   ];
 
   Widget _menuMark(BuildContext context) {
-    print(configCallback);
     return SizedBox(
       width: 34,
       child: MaterialButton(
@@ -68,7 +66,7 @@ class FreightAppBar extends StatelessWidget {
 
   Widget _dropDown(String label, Color color) {
     return Container(
-      padding: EdgeInsets.only(left: 8),
+      padding: const EdgeInsets.only(left: 8),
       decoration: const ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
@@ -92,6 +90,7 @@ class FreightAppBar extends StatelessWidget {
           SizedBox(
             width: 6,
           ),
+          const SizedBox(width: 6,),
           ButtonTheme(
             //alignedDropdown: true,
             child: DropdownButton(
@@ -148,7 +147,7 @@ class FreightAppBar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
       height: 40,
       child: TextButton(
@@ -166,6 +165,7 @@ class FreightAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController scrollController = ScrollController();
     _calendarControllerToday.addListener(() {
       print(_calendarControllerToday.value);
     });
@@ -175,27 +175,29 @@ class FreightAppBar extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-              height: 40,
-              width: MediaQuery.of(context).size.width,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  _menuMark(context),
-                  const SizedBox(width: 10.0),
-                  _bookMark(),
-                  const SizedBox(width: 10.0),
-                  _dropDown('상', const Color(0xff60acff)),
-                  const SizedBox(width: 10.0),
-                  _dropDown('하', const Color(0xff2a3f85)),
-                  const SizedBox(width: 10.0),
-                  ...themaList.map((ele) {
-                    return Row(children: [
-                      _themaBtnWidget(ele["name"], ele["icon"]),
-                      const SizedBox(width: 10.0)
-                    ]);
-                  }).toList()
-                ],
-              )),
+            height: 40,
+            width: MediaQuery.of(context).size.width,
+            child: ListView(
+              controller: scrollController,
+              scrollDirection: Axis.horizontal,
+              children: [
+                _menuMark(context),
+                const SizedBox(width: 10.0),
+                _bookMark(),
+                const SizedBox(width: 10.0),
+                _dropDown('상', const Color(0xff60acff)),
+                const SizedBox(width: 10.0),
+                _dropDown('하', const Color(0xff2a3f85)),
+                const SizedBox(width: 10.0),
+                ...themaList.map((ele) {
+                  return Row(children: [
+                    _themaBtnWidget(ele["name"], ele["icon"]),
+                    const SizedBox(width: 10.0)
+                  ]);
+                }).toList()
+              ],
+            )
+          ),
           line(),
           AdvancedCalendar(
             controller: _calendarControllerToday,
