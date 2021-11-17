@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class FreightConfigDialog extends StatelessWidget {
-  FreightConfigDialog({Key? key}) : super(key: key);
+class FreightConfig extends StatelessWidget {
+  FreightConfig({Key? key, required this.close}) : super(key: key);
 
   late Size size;
-
-  void close(BuildContext context) {
-    Navigator.of(context).pop();
-  }
+  VoidCallback close;
 
   Widget dialogContent(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -25,7 +23,7 @@ class FreightConfigDialog extends StatelessWidget {
                     style: TextStyle(color: Colors.black, fontSize: 24)),
                 GestureDetector(
                   onTap: () {
-                    close(context);
+                    close();
                   },
                   child: const Align(
                     alignment: Alignment.topRight,
@@ -94,7 +92,9 @@ class FreightConfigDialog extends StatelessWidget {
                               color: Color(0xff2a3f85),
                               style: BorderStyle.solid,
                             ))),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed("config/areaSelect", id:2);
+                        },
                         child: Text('+ 지역 추가',
                             style: TextStyle(
                               fontSize: 16,
@@ -261,11 +261,12 @@ class FreightConfigDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return Dialog(
-        elevation: 0,
-        insetPadding: const EdgeInsets.all(0),
-        backgroundColor: Colors.transparent,
-        child: dialogContent(context));
+    return dialogContent(context);
+    // return Dialog(
+    //     elevation: 0,
+    //     insetPadding: const EdgeInsets.all(0),
+    //     backgroundColor: Colors.transparent,
+    //     child: dialogContent(context));
   }
 }
 

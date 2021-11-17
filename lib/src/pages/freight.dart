@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lolab_freight_app/src/components/freight/detail/freight_config.dart';
+import 'package:lolab_freight_app/src/components/freight/config/freight_config_main.dart';
 import 'package:lolab_freight_app/src/components/freight/freight_appbar.dart';
 import 'package:lolab_freight_app/src/components/freight/freight_card.dart';
 import 'package:lolab_freight_app/src/components/freight/detail/freight_detail_dialog.dart';
@@ -15,7 +15,7 @@ class Freight extends StatelessWidget {
     return showDialog<String>(
       barrierColor: const Color(0xffedf0f5),
       context: context,
-      builder: (context) => FreightConfigDialog()
+      builder: (context) => FreightConfigMain()
     );
   }
 
