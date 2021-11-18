@@ -3,16 +3,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DeliveryController extends GetxController {
-  static DeliveryController get to => Get.find();
-  RxInt cnt = 3.obs;
+class DeliveryPaymentController extends GetxController {
+  static DeliveryPaymentController get to => Get.find();
+  RxInt cnt = 20.obs;
+  RxInt dayCnt = 5.obs;
   Rx<DateTime> dt = DateTime.now().obs;
   ScrollController scrollController = ScrollController();
 
   @override
   void onInit() {
-    print("DeliveryController Init");
-    videoLoad();
+    print("DeliveryPaymentController Init");
+    //search();
     _event();
     super.onInit(); 
   }
@@ -20,21 +21,18 @@ class DeliveryController extends GetxController {
   void _event() {
     scrollController.addListener(() {
       if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-        videoLoad();
+        search();
       }
     });
   } 
 
-  void videoLoad() async{
-    
-    // int c = Random().nextInt(10);
-    // print("_videoLoad : $c");
-    // cnt(c);
+  void search() async{
+    cnt(Random().nextInt(30));
   }
 
   @override
   void onClose() {
-    print("DeliveryController Close");
+    print("DeliveryPaymentController Close");
     super.onClose();
   }
 }

@@ -150,7 +150,7 @@ class FreightConfig extends StatelessWidget {
                         color: Color(0xff000000)),
                   ),
                   Text(
-                    '거리 제한 없음',
+                    '요금 제한 없음',
                     style: TextStyle(fontSize: 14, color: Color(0xff666666)),
                   ),
                 ],
@@ -171,36 +171,22 @@ class FreightConfig extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 100,
-                            width: MediaQuery.of(context).size.width / 2 - 40,
-                            child: CupertinoTheme(
-                                data: CupertinoThemeData(
-                                  textTheme: CupertinoTextThemeData(
-                                      pickerTextStyle: TextStyle(
-                                          color: Color(0xff2a3f85),
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 20)),
-                                ),
-                                child: CupertinoPicker(
-                                  children: [5, 10, 15, 20, 25, 30]
-                                      .map((e) => Text('$e'))
-                                      .toList(),
-                                  itemExtent: 30,
-                                  // selectionOverlay:
-                                  //     CupertinoPickerDefaultSelectionOverlay(
-                                  //   background: Color(0x33f4f6f9),
-                                  //   // background: Colors.red.withOpacity(0.8),
-                                  // ),
-                                  // scrollController:
-                                  //     FixedExtentScrollController(initialItem: _result),
-                                  onSelectedItemChanged: (int value) {},
-                                  // onSelectedItemChanged: (int index) {
-                                  //   setState(() {
-                                  //     _result = _itemList[index];
-                                  //   });
-                                  // },
-                                )),
-                          )
+                              height: 100,
+                              width: MediaQuery.of(context).size.width / 2 - 40,
+                              child: CupertinoPicker(
+                                children: [5, 10, 15, 20, 25, 30]
+                                    .map((e) => Text('$e'))
+                                    .toList(),
+                                itemExtent: 30,
+                                // scrollController:
+                                //     FixedExtentScrollController(initialItem: _result),
+                                onSelectedItemChanged: (int value) {},
+                                // onSelectedItemChanged: (int index) {
+                                //   setState(() {
+                                //     _result = _itemList[index];
+                                //   });
+                                // },
+                              )),
                         ]),
                         Container(
                           child: Text('~'),
@@ -218,36 +204,28 @@ class FreightConfig extends StatelessWidget {
                           SizedBox(
                               height: 100,
                               width: MediaQuery.of(context).size.width / 2 - 40,
-                              child: CupertinoTheme(
-                                  data: CupertinoThemeData(
-                                    textTheme: CupertinoTextThemeData(
-                                        pickerTextStyle: TextStyle(
-                                            color: Color(0xff2a3f85),
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 20)),
-                                  ),
-                                  child: CupertinoPicker(
-                                    children: [
-                                      100,
-                                      150,
-                                      200,
-                                      250,
-                                      300,
-                                      350,
-                                      400,
-                                      450,
-                                      500
-                                    ].map((e) => Text('$e')).toList(),
-                                    itemExtent: 30,
-                                    // scrollController:
-                                    //     FixedExtentScrollController(initialItem: _result),
-                                    onSelectedItemChanged: (int value) {},
-                                    // onSelectedItemChanged: (int index) {
-                                    //   setState(() {
-                                    //     _result = _itemList[index];
-                                    //   });
-                                    // },
-                                  )))
+                              child: CupertinoPicker(
+                                children: [
+                                  100,
+                                  150,
+                                  200,
+                                  250,
+                                  300,
+                                  350,
+                                  400,
+                                  450,
+                                  500
+                                ].map((e) => Text('$e')).toList(),
+                                itemExtent: 30,
+                                // scrollController:
+                                //     FixedExtentScrollController(initialItem: _result),
+                                onSelectedItemChanged: (int value) {},
+                                // onSelectedItemChanged: (int index) {
+                                //   setState(() {
+                                //     _result = _itemList[index];
+                                //   });
+                                // },
+                              ))
                         ])
                       ],
                     ),
@@ -290,69 +268,6 @@ class FreightConfig extends StatelessWidget {
     //     backgroundColor: Colors.transparent,
     //     child: dialogContent(context));
   }
-}
-
-Widget PriceContent(BuildContext context) {
-  return Container(
-    //height: size.height - 100,
-    // margin: const EdgeInsets.only(top: 50.0, left: 12, right: 12),
-    child: SingleChildScrollView(
-      child: Column(children: [
-        Container(
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          decoration: BoxDecoration(
-            color: Color(0xffffffff),
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: ExpansionTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  "최소 배송 요금",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                      color: Color(0xff000000)),
-                ),
-                Text(
-                  '요금 제한 없음',
-                  style: TextStyle(fontSize: 14, color: Color(0xff666666)),
-                ),
-              ],
-            ),
-            children: [
-              Column(
-                children: [
-                  OutlinedButton(
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsets>(
-                            const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 100)),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Color(0xff2a3f85)),
-                        side: MaterialStateProperty.all(BorderSide(
-                          width: 1.0,
-                          color: Color(0xff2a3f85),
-                          style: BorderStyle.solid,
-                        ))),
-                    onPressed: () {},
-                    child: Text('최소 요금 설정',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        )),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ]),
-    ),
-  );
 }
 
 class DateWidget extends StatelessWidget {

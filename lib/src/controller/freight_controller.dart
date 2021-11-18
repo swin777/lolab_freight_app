@@ -9,6 +9,7 @@ class FreightController extends GetxController {
 
   @override
   void onInit() {
+    print("FreightController Init");
     _videoLoad();
     _event();
     super.onInit(); 
@@ -24,5 +25,11 @@ class FreightController extends GetxController {
 
   void _videoLoad() async{
     
+  }
+
+  @override
+  void onClose() {
+    print("FreightController Close");
+    super.onClose();
   }
 }

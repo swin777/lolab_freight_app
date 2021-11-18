@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lolab_freight_app/src/components/freight/detail/freight_detail_dialog.dart';
 import 'package:lolab_freight_app/src/controller/delivery_controller.dart';
-
 import 'delivery_card.dart';
 import 'detail/delivery_payment.dart';
 
@@ -35,6 +33,7 @@ class DeliveryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.videoLoad();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: CustomScrollView(controller: controller.scrollController, slivers: [
