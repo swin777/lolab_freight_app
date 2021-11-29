@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:lolab_freight_app/src/controller/app_controller.dart';
 import 'package:lolab_freight_app/src/controller/delivery_controller.dart';
+import 'package:lolab_freight_app/src/controller/delivery_payment_controller.dart';
 import 'package:lolab_freight_app/src/controller/freight_controller.dart';
 
 class InitBinding implements Bindings {
@@ -8,6 +9,10 @@ class InitBinding implements Bindings {
   void dependencies() {
     Get.put(AppController());
     Get.put(FreightController());
-    Get.put(DeliveryController());
+    //Get.put(DeliveryController());
+    //Get.put(DeliveryPaymentController());
+    //Get.lazyPut<DeliveryController>(() => DeliveryController());
+    //Get.lazyPut<DeliveryPaymentController>(() => DeliveryPaymentController());
   }
 }
+

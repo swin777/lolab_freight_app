@@ -7,6 +7,8 @@ import 'package:lolab_freight_app/src/controller/delivery_controller.dart';
 class Delivery extends StatelessWidget {
   Delivery({Key? key}) : super(key: key);
 
+  final DeliveryController controller = Get.put(DeliveryController());
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
