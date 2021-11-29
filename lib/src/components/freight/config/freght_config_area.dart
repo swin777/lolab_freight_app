@@ -12,15 +12,14 @@ class FreightConfigArea extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: const Icon(Icons.arrow_back_ios_rounded, size: 40),
-              onPressed: () => Get.back(id:2)
-            ),
+                icon: const Icon(Icons.arrow_back_ios_rounded, size: 40),
+                onPressed: () => Get.back(id: 2)),
             const Expanded(
-              child: Align(
-                child: Text("지역을 선탁해세요", style: TextStyle(fontSize: 20, color: Colors.black)),
-                alignment: Alignment.center,
-              )
-            )
+                child: Align(
+              child: Text("지역을 선택하세요",
+                  style: TextStyle(fontSize: 20, color: Colors.black)),
+              alignment: Alignment.center,
+            ))
           ],
         )
       ],
