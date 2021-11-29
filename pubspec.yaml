@@ -45,6 +45,7 @@ dependencies:
   webview_flutter: ^2.1.2
   page_transition: ^2.0.4
   scrollable_positioned_list: ^0.2.2
+  shared_preferences: ^2.0.9
 
 dev_dependencies:
   flutter_test:
