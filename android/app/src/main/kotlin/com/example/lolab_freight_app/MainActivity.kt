@@ -1,4 +1,4 @@
-package com.example.lolab_freight_app
+package com.ash.lolab_freight_app
 
 import io.flutter.embedding.android.FlutterActivity
 

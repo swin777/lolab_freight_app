@@ -36,13 +36,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     Widget example1 = SplashScreenView(
-      navigateRoute: Container(),
-      duration: 5000,
+      navigateRoute: const App(),
+      duration: 2000,
       imageSize: 130,
-      imageSrc: "kt_logo.png",
+      imageSrc: "assets/images/kt_logo.png",
       text: "KT 물류",
       textType: TextType.ColorizeAnimationText,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         fontSize: 40.0,
       ),
       colors: [
@@ -51,12 +51,12 @@ class MyApp extends StatelessWidget {
         Colors.yellow,
         Colors.red,
       ],
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xff2a3f85),
     );
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: createMaterialColor(Color(0xff2a3f85)), 
+        primarySwatch: createMaterialColor(const Color(0xff2a3f85)), 
         scaffoldBackgroundColor: Colors.grey[200],
         appBarTheme: AppBarTheme(backgroundColor: Colors.grey[200],),
         textTheme: const TextTheme(
@@ -81,10 +81,11 @@ class MyApp extends StatelessWidget {
         )
       ),
       initialBinding: InitBinding(),
-      initialRoute: "/",
-      getPages: [
-        GetPage(name: "/", page: () => App()),
-      ],
+      // initialRoute: "/",
+      // getPages: [
+      //   GetPage(name: "/", page: () => App()),
+      // ],
+      home: example1,
     );
   }
 }

@@ -66,7 +66,7 @@ class FreightAppBar extends StatelessWidget {
 
   Widget _dropDown(String label, Color color) {
     return Container(
-      padding: const EdgeInsets.only(left: 8),
+      //padding: const EdgeInsets.only(left: 0),
       decoration: const ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
@@ -74,71 +74,90 @@ class FreightAppBar extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(24.0)),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          CircleAvatar(
-              radius: 12.0,
-              backgroundColor: color, //Color(0xff696969),
-              child: Text(
-                label,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              )),
-          SizedBox(
-            width: 6,
-          ),
-          const SizedBox(width: 6,),
-          ButtonTheme(
-            //alignedDropdown: true,
-            child: DropdownButton(
-                //elevation: 2,
+      child: ButtonTheme(
+        alignedDropdown: true,
+        child: DropdownButton(
+            value: 10,
+            underline: Container(height: 0,),
+            borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+            onChanged: (int? value) {},
+            items: [
+              DropdownMenuItem(
                 value: 10,
-                underline: Container(height: 0),
-                borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-                onChanged: (int? value) {},
-                items: [
-                  DropdownMenuItem(
-                    value: 10,
-                    child: Container(
-                      child: const Text(
-                        '주변10km',
-                        style: TextStyle(
-                            color: Colors.blueAccent,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 12.0,
+                      backgroundColor: color, //Color(0xff696969),
+                      child: Text(
+                        label,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold),
-                      ),
-                      color: Colors.white,
+                      )
                     ),
-                  ),
-                  DropdownMenuItem(
-                    value: 20,
-                    child: Container(
-                      child: const Text(
-                        '주변20km',
-                        style: TextStyle(
-                            color: Colors.blueAccent,
+                    const SizedBox(width: 6,),
+                    const Text(
+                      '주변10km',
+                      style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              DropdownMenuItem(
+                value: 20,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 12.0,
+                      backgroundColor: color, //Color(0xff696969),
+                      child: Text(
+                        label,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold),
-                      ),
-                      color: Colors.white,
+                      )
                     ),
-                  ),
-                  DropdownMenuItem(
-                    value: 30,
-                    child: Container(
-                      child: const Text(
-                        '주변30km',
-                        style: TextStyle(
-                            color: Colors.blueAccent,
+                    const SizedBox(width: 6,),
+                    const Text(
+                      '주변20km',
+                      style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              DropdownMenuItem(
+                value: 30,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 12.0,
+                      backgroundColor: color, //Color(0xff696969),
+                      child: Text(
+                        label,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold),
-                      ),
-                      color: Colors.white,
+                      )
                     ),
-                  )
-                ]),
-          ),
-        ],
+                    const SizedBox(width: 6,),
+                    const Text(
+                      '의정부주변',
+                      style: TextStyle(
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              )
+            ]),
       ),
     );
   }

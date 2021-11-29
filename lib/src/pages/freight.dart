@@ -39,8 +39,8 @@ class Freight extends StatelessWidget {
                 flexibleSpace: FreightAppBar(configCallback:goConfig),
                 floating: true,
                 snap: true,
-                expandedHeight: 170,
-                collapsedHeight: 170,
+                expandedHeight: 172,
+                collapsedHeight: 172,
               ),
               controller.cnt.value == 0 
               ?

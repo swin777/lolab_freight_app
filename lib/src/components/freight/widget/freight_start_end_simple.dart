@@ -39,7 +39,7 @@ class FreightStartEndSimple extends StatelessWidget {
                 children: [
                   Text('오늘 10:30', style: Theme.of(context).textTheme.caption,),
                   SizedBox(width: 8,),
-                  Text('405km', style: Theme.of(context).textTheme.headline5,),
+                  Text('405km', style: Theme.of(context).textTheme.headline5, overflow: TextOverflow.ellipsis,),
                 ],
               ),
               const SizedBox(height: 4,),
