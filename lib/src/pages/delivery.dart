@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lolab_freight_app/src/components/delivery/delivery_list.dart';
-import 'package:lolab_freight_app/src/components/freight/detail/freight_posion_map.dart';
+import 'package:lolab_freight_app/src/components/freight/detail/freight_posion_map_native.dart';
 import 'package:lolab_freight_app/src/controller/delivery_controller.dart';
 
 class Delivery extends StatelessWidget {
@@ -11,6 +11,7 @@ class Delivery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.getDeliveryList();
     return SafeArea(
       child : Navigator(
         key: Get.nestedKey(1), 
@@ -24,7 +25,8 @@ class Delivery extends StatelessWidget {
               );
             case 'map':
               return GetPageRoute(
-                page: () {return FreightPostionMap(); },
+                page: () {return FreightPostionMap(arg: settings.arguments); },
+                //page: () {return FreightPostionMap(); },
                 transition: Transition.leftToRight
               );
           }

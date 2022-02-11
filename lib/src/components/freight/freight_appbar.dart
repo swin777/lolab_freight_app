@@ -10,7 +10,6 @@ class FreightAppBar extends StatelessWidget {
   FreightAppBar({required this.configCallback});
 
   final FreightController controller = FreightController.to;
-  final AdvancedCalendarController _calendarControllerToday = AdvancedCalendarController.today();
   final List<DateTime> events = [
     //DateTime.utc(2021, 08, 10, 12),
     //DateTime.utc(2021, 08, 11, 12)
@@ -29,6 +28,7 @@ class FreightAppBar extends StatelessWidget {
   Widget _menuMark(BuildContext context) {
     return SizedBox(
       width: 34,
+      height: 40,
       child: MaterialButton(
         elevation: 0,
         shape: const CircleBorder(),
@@ -47,7 +47,6 @@ class FreightAppBar extends StatelessWidget {
   }
 
   Widget _bookMark() {
-    //controller.dt.value = _calendarControllerToday.value;
     return SizedBox(
       width: 34,
       child: MaterialButton(
@@ -184,38 +183,43 @@ class FreightAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AdvancedCalendarController _calendarControllerToday = AdvancedCalendarController.custom(controller.orderListParam.value.yearMonthDay!);
     ScrollController scrollController = ScrollController();
     _calendarControllerToday.addListener(() {
-      print(_calendarControllerToday.value);
+      controller.orderListParam.update((val) {val!.yearMonthDay = _calendarControllerToday.value;});
     });
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       //height: 170,
       child: Column(
         children: [
-          SizedBox(
-            height: 40,
-            width: MediaQuery.of(context).size.width,
-            child: ListView(
-              controller: scrollController,
-              scrollDirection: Axis.horizontal,
-              children: [
-                _menuMark(context),
-                const SizedBox(width: 10.0),
-                _bookMark(),
-                const SizedBox(width: 10.0),
-                _dropDown('상', const Color(0xff60acff)),
-                const SizedBox(width: 10.0),
-                _dropDown('하', const Color(0xff2a3f85)),
-                const SizedBox(width: 10.0),
-                ...themaList.map((ele) {
-                  return Row(children: [
-                    _themaBtnWidget(ele["name"], ele["icon"]),
-                    const SizedBox(width: 10.0)
-                  ]);
-                }).toList()
-              ],
-            )
+          Row(
+            children: [
+              _menuMark(context),
+              SizedBox(
+                height: 40,
+                width: MediaQuery.of(context).size.width-24-34,
+                child: ListView(
+                  controller: scrollController,
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    const SizedBox(width: 10.0),
+                    _bookMark(),
+                    const SizedBox(width: 10.0),
+                    _dropDown('상', const Color(0xff60acff)),
+                    const SizedBox(width: 10.0),
+                    _dropDown('하', const Color(0xff2a3f85)),
+                    const SizedBox(width: 10.0),
+                    ...themaList.map((ele) {
+                      return Row(children: [
+                        _themaBtnWidget(ele["name"], ele["icon"]),
+                        const SizedBox(width: 10.0)
+                      ]);
+                    }).toList()
+                  ],
+                )
+              ),
+            ],
           ),
           line(),
           AdvancedCalendar(

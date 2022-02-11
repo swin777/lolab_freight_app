@@ -1,18 +1,20 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lolab_freight_app/src/models/delivery/shipment.dart';
+import 'package:lolab_freight_app/src/models/delivery/shipmentList.dart';
+import 'package:lolab_freight_app/src/repository/deliveryRepository.dart';
 
 class DeliveryController extends GetxController {
   static DeliveryController get to => Get.find();
   RxInt cnt = 3.obs;
-  Rx<DateTime> dt = DateTime.now().obs;
   ScrollController scrollController = ScrollController();
+
+  Rx<ShipmentList>? deliveryList = ShipmentList(shipments: []).obs;
+  RxString cursor = "".obs;
+  Rx<Shipment>? shipment = Shipment().obs;
 
   @override
   void onInit() {
-    print("DeliveryController Init");
-    videoLoad();
     _event();
     super.onInit(); 
   }
@@ -20,21 +22,27 @@ class DeliveryController extends GetxController {
   void _event() {
     scrollController.addListener(() {
       if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-        videoLoad();
+        getDeliveryList();
       }
     });
   } 
 
-  void videoLoad() async{
-    
-    // int c = Random().nextInt(10);
-    // print("_videoLoad : $c");
-    // cnt(c);
+  void getDeliveryList() async{
+    try{
+      ShipmentList? list = await DeliveryRepository.to.deliveryList();
+      deliveryList?.value = list!;
+      if(list!=null) {
+        cursor(list.shipments![list.shipments!.length-1].orderId);
+      }
+    // ignore: empty_catches
+    }catch(e){}
   }
 
-  @override
-  void onClose() {
-    print("DeliveryController Close");
-    super.onClose();
+  void getShipment(String orderId) async{
+    try{
+      shipment!.value = deliveryList!.value.shipments?.firstWhere((element) => element.orderId == orderId) as Shipment;
+    }catch(e){
+      print(e.toString());
+    }
   }
 }

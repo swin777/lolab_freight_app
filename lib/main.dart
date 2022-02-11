@@ -45,12 +45,7 @@ class MyApp extends StatelessWidget {
       textStyle: const TextStyle(
         fontSize: 40.0,
       ),
-      colors: [
-        Colors.purple,
-        Colors.blue,
-        Colors.yellow,
-        Colors.red,
-      ],
+      colors: const [Colors.purple, Colors.blue, Colors.yellow,Colors.red],
       backgroundColor: const Color(0xff2a3f85),
     );
     return GetMaterialApp(

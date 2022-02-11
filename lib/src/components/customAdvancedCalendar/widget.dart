@@ -117,19 +117,19 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
       child: DefaultTextStyle(
         style: theme.textTheme.bodyText2!,
         child: GestureDetector(
-          onVerticalDragStart: (details) {
-            _captureOffset = details.globalPosition;
-          },
-          onVerticalDragUpdate: (details) {
-            final moveOffset = details.globalPosition;
+          // onVerticalDragStart: (details) {
+          //   _captureOffset = details.globalPosition;
+          // },
+          // onVerticalDragUpdate: (details) {
+          //   final moveOffset = details.globalPosition;
 
-            final diffY = moveOffset.dy - _captureOffset!.dy;
+          //   final diffY = moveOffset.dy - _captureOffset!.dy;
 
-            _animationController.value =
-                _animationValue + diffY / (widget.weekLineHeight * 5);
-          },
-          onVerticalDragEnd: (details) => _handleFinishDrag(),
-          onVerticalDragCancel: () => _handleFinishDrag(),
+          //   _animationController.value =
+          //       _animationValue + diffY / (widget.weekLineHeight * 5);
+          // },
+          // onVerticalDragEnd: (details) => _handleFinishDrag(),
+          // onVerticalDragCancel: () => _handleFinishDrag(),
           child: Container(
             color: Colors.transparent,
             child: Column(

@@ -361,6 +361,7 @@ class _FreightConfigState extends State<FreightConfig> {
 
   @override
   Widget build(BuildContext context) {
+    print('config build call');
     size = MediaQuery.of(context).size;
     return dialogContent(context);
     // return Dialog(

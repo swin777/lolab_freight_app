@@ -1,0 +1,285 @@
+syntax = "proto3";
+
+package com.kt.navi.connector.http.navi.v1_5_6;
+option java_outer_classname = "ProtoResponse";
+
+message Routes {
+  repeated Route routes = 1;
+}
+
+message Route {
+  string ver = 1; // 프로토콜 버전
+  string route_id = 2; // 경로탐색ID (uuid + rp_type(route))
+  string guide_id = 3; // 경로안내ID (uuid + rp_type(route) + g(guide))
+
+  int32 distance = 4; // 총 거리(m)
+  int32 time = 5;  // 총 소요 시간(s)
+  int32 totalToll = 6; // 총 톨비
+
+  int32 rp_type = 7; // 요청한 rp_type
+  int32 prediction_type = 8; // 0: 해당사항없음, 1: 출발시간기준(타임머신), 2:도착시간기준(타임머신)
+
+  repeated Link links = 9; // 링크정보
+  repeated Link links_no_vertex = 10; // 링크정보 vertex 정보 제외 - 링크정보가 있는 경우 무시된다.
+
+  repeated Tbt tbts = 11; // turn by turn - RP, RG 포은 동일하나, RP는 IC, JC 정보가 TBT에 포함된다.
+  repeated Lane lanes = 12; // 차선정보
+
+  RoadView road_view = 13; // 교차로이미지
+  repeated SoundData dir_sounds = 14; // 방면음성 Data
+  repeated SoundData road_sounds = 15; // 교차로음성 Data
+
+  repeated HighwaySection highway_sections = 16; // 고속도로정보
+  repeated TG tgs = 17; // 톨게이트 - 고속도로정보, tbt가 있는 경우 자동으로 포함
+
+  repeated EnergyPrice energy_prices = 18; // 에너지원 가격
+
+  repeated Safety safeties = 19; // 안전운전정보
+  repeated EmergencySafety emergency_safeties = 20;
+  repeated Incident incidents = 21; // 유고new
+
+  repeated RouteGuide route_guides = 22;
+  repeated ControlLink control_links = 23;
+
+  repeated Cctv cctvs = 24;
+
+  SafetySummary safety_summary = 25;
+  RoadSummary road_summary = 26; // 경로탐색 주요도로
+
+  string error_code = 27;
+  string error_msg = 28;
+
+  int64 datetime = 29; // 요청한 경로탐색 출발 혹은 도착 시간
+  int64 req_t = 30; // 요청시간
+
+  string route_session_id = 31;
+}
+
+message RouteGuide {
+    int32 link_index = 1;
+    int32 type = 2;
+    float link_x = 3; // 링크에 맵매칭된 x좌표
+    float link_y = 4; // 링크에 맵매칭된 y좌표
+
+    repeated int64 link_ids = 5;
+    int32 road_id = 6;
+}
+
+message Incident {
+    int32 link_index = 1;
+    string id = 2;
+    int32 code = 3;
+    string address = 4; // 지번주소
+    string address_new = 5; // 새주소
+    double loc_x = 6; // utmk x
+    double loc_y = 7; // utmk y
+    int32 traffic_code = 8; // 0 원할, 1 지체, 2 정체
+    string title = 9;
+    int64 start_date = 10;
+    int64 end_date = 11;
+    int32 lane = 12;
+}
+
+message Cctv {
+    int32 link_index = 1; // 인접한 링크 인덱스
+    int32 id = 2;
+    float x = 3; // poi x좌표
+    float y = 4; // poi y좌표
+    float link_x = 5; // 링크에 맵매칭된 x좌표
+    float link_y = 6; // 링크에 맵매칭된 y좌표
+}
+
+message EnergyPrice {
+    int32 link_index = 1; // 인접한 링크 인덱스
+    string id = 2;
+    string name = 3; // 충전소명
+    int32 brand = 4; // 브랜드코드
+
+    repeated int32 energy_srcs = 5; // 에너지타입 - 휘발류(0), 고급휘발류(1), 경유(2), 등유(3), LPG(4), CNG(10), LNG(11), 전기(20)
+    repeated int32 prices = 6; // 에너지타입 배열 인덱스로 접근
+    repeated int64 trade_datetime = 7; // 가격거래시간
+
+    string phone = 8;
+
+    float x = 9; // poi x좌표
+    float y = 10; // poi y좌표
+    repeated float link_x = 11; // 링크에 맵매칭된 x좌표
+    repeated float link_y = 12; // 링크에 맵매칭된 y좌표
+    float guide_x = 13; // rg x좌표
+    float guide_y = 14; // rg y좌표
+}
+
+message Link {
+  int64 id = 1;
+  int32 type = 2;
+  int32 ext_type = 3;
+  int32 road_type = 4;
+  int32 length = 5;
+  int32 limit_speed = 6;
+  int32 real_speed = 7;
+  int32 limit_weight = 8;
+  int32 limit_height = 9;
+  int32 time = 10;
+  int32 lane_count = 11;
+  int32 tspInfo = 12; // 실시간 교통정보 타입. 정체(1), 서행(2), 원활(3), 정보없음(4)
+  string road_name = 13;
+  repeated Node nodes = 14;
+  int64 ks_id = 15; // KS Link ID (실시간 교통정보를 위한 KS Link ID)
+  int32 admin_code = 16;
+  repeated int32 dedicated_roads = 17; // 전용도로 5:긴급차량전용
+}
+
+message Node {
+  float x = 1;
+  float y = 2;
+}
+
+message Tbt {
+  int32 link_index = 1;
+  int32 type = 2;
+  int32 next_distance = 3;
+  string tbt_name = 4; // tbt명(교차로의 경우 교차로명)
+  string sht_dir_name = 5; // 근거리방면정보
+  repeated string mid_dir_names = 6; // 중거리방면정보
+  string lng_dir_name = 7; // 원거리방면정보
+  float tbt_link_x = 8; // 링크에 맵매칭된 TBT x좌표
+  float tbt_link_y = 9; // 링크에 맵매칭된 TBT y좌표
+  int32 tbt_link_point_distance = 10; // 링크에 맵매칭된 TBT좌표와 해당 링크의 마지막 vertex간의 거리(m)
+  int32 wayout = 11;
+}
+
+
+message SoundData {
+  int32 link_index = 1;
+  float time = 2;
+  int32 size = 3;
+  string name = 4;
+  bytes data = 5;
+}
+
+message Lane {
+  int32 link_index = 1;
+  bytes tbts = 2;
+  bytes types= 3;
+}
+
+message RoadView {
+  repeated string image_type = 1; // day, night
+  string url_pattern = 2; // ex: "${BASEURL}/resource/img/${IMAGE_TYPE}/${FILE}.png"
+  repeated RoadViewUrl files = 3;
+}
+
+message RoadViewUrl {
+  int32 link_index = 1;
+  string file = 2; // 파일명
+}
+
+message HighwaySection {
+  repeated Highway highways = 1;
+}
+
+message Highway {
+    int32 link_index = 1;
+    int32 type = 2; // highway type: ic(1), jc(2), tg(3), sa(4), ra(6)
+    string name = 3;
+    ServiceArea sa = 4;
+}
+
+message TG {
+  int32 id = 1;
+  int32 lane_count = 2;
+  int32 link_index = 3;
+  bytes hipass_lanes = 4; // 하이라이트 차선정보
+  bytes truck_hipass_lanes = 5; // 화물차 하이라이트 차선정보
+  int32 toll = 6; // 요금 (원톨링 - 하이패스 장착차량)
+  int32 total_toll = 7; // 합산 요금(원톨링 - 하이패스 미장착차량 - 통과톨게이인 경우 값 0)
+  string name = 8;
+  bool entrance = 9; // 발권여부
+  bool pass = 10; // 통과여부(원톨링 - 하이패스인 경우 자동 정산, 아닌 경우 마지막 정산 톨게이트에서 정산)
+  int32 limit_weight = 11; // 하이패스 전용 톨게이트 제한 중량
+  int32 tg_type = 12; // 톨게이트 유형: 일반(0), 하이패스전용(1), 가상(2)
+}
+
+message ServiceArea {
+  repeated string energy_station_ids = 1; // 주유소 ID
+  repeated int32 energy_brands = 2; // 에너지원 제공업체 브랜드코드
+  repeated int32 energy_srcs = 3; // 대표 에너지원. energy_brands와 동일한 배열 크기
+
+  bool atm = 4;
+  bool cargo = 5; // 화물휴게소 유무
+  bool oa = 6; // 서비스센터 유무
+  bool car_center = 7; // 카센터 유무
+  bool kidplay = 8; // 어린이 놀이시설유무
+
+  int32 mart_code = 9; // 대형마트 브랜드 코드: 홈플러스(1), 이마트(2), 롯데마트(3), 농협하나로마트(4), 농협하나로클럽(5), 킴스클럽(6), 코스트코(7), 빅마켓(8)
+  int32 mall_code = 10; // 대형상가 브랜드 코드: 신세계(1), 롯데(2), 갤러리아(3), AK프라자(4), 동아(5), 현대(6), 뉴코아(7), 2001(8)
+
+  string phone = 11;
+}
+
+message Safety {
+  int32 link_index = 1;
+  int32 type = 2;
+  float link_x = 3; // 링크에 맵매칭된 x좌표 
+  float link_y = 4; // 링크에 맵매칭된 y좌표
+  int32 limit_code = 5;
+  int32 policy_id = 6; // 단속 정책 ID
+}
+
+message Toll {
+  string toll_info_id = 1; // Toll API 요청에대한 ID
+
+  repeated int32 from_tg = 2;
+  int32 to_tg = 3; // 정산 혹은 원톨링 톨게이트 ID
+  int32 car_type = 4; // 차종
+
+  int32 toll = 5; // 톨비
+  int32 total_toll = 6; // 합산 톨비
+  int32 policy = 7; // 적용된 톨비 정책
+
+  int64 from_timestamp = 8; //from_rg 방문한 타임스탬프
+  int64 to_timestamp = 9; // to_tg 방문할 타임스탬프
+
+  int32 tg_type = 10; // 톨게이트 유형: 일반TG-하이패스혼용(0), 하이패스전용 TG(1), 가상TG(2)
+
+  string route_id = 11;
+  string route_session_id = 12;
+}
+
+message SafetySummary {
+    bool height = 1;
+    bool weight = 2;
+    bool water_protection = 3;
+    bool restriction = 4;
+    bool narrow = 5;
+    bool exhaust_control = 6;
+}
+
+message RoadSummary {
+    repeated RoadInfo road_infos= 1;
+    bool has_ferry = 2;
+}
+
+message RoadInfo {
+  string road_name = 1;
+  int32 road_level = 2;
+  int32 road_length = 3;
+  int32 road_time = 4;
+  repeated int32 link_indexes = 5;
+}
+
+message ControlLink {
+  int32 link_index = 1;
+  int32 tbt_type = 2; // 0: 기본, 998:출발지, 999:목적지, 1000:경유지
+  int32 control_code = 3; // 1:녹색교통지역
+  int64 start_timestamp = 4;
+  int64 end_timestamp = 5;
+}
+
+message EmergencySafety {
+  int32 link_index = 1;
+  int32 type = 2; // 125: 긴급차량전용 높이제한, 126: 긴급차량전용 폭제한
+  float link_x = 3; // 링크에 맵매칭된 x좌표
+  float link_y = 4; // 링크에 맵매칭된 y좌표
+  int32 limit_code = 5;
+}

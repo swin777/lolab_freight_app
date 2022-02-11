@@ -80,7 +80,7 @@ class DeliveryPaymentDay extends StatelessWidget {
                     ],
                   ),
                 ),
-                FreightStartEndSimple(),
+                //FreightStartEndSimple(),
               ],
             ),
           );

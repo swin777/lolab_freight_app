@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:lolab_freight_app/src/models/freight/order.dart';
 import 'package:lolab_freight_app/src/utils/util.dart';
+import 'package:maplibre_gl/mapbox_gl.dart';
 
 class FreightStartEnd extends StatelessWidget {
-  const FreightStartEnd({Key? key}) : super(key: key);
+  Order order;
+  FreightStartEnd({Key? key, required this.order}) : super(key: key);
 
-  Widget gotoMapBtn(){
+  Widget gotoMapBtn(LatLng latLag){
+    LatLng p = latLag;
     return IconButton(
       icon: const Icon(Icons.location_on_outlined, size: 34),
-      onPressed: () => Get.toNamed('map', id:1),
+      onPressed: () { 
+        Get.toNamed('map', id:1, arguments: {'order':order}); 
+      },
     );
   }
 
@@ -31,8 +38,8 @@ class FreightStartEnd extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  Text('오늘 10:30 ', style: Theme.of(context).textTheme.caption,),
-                  Text('405km', style: Theme.of(context).textTheme.headline5,),
+                  Text('${toDayOrYYYYMM(order.loadingDateTime!)} ${DateFormat('HH:mm').format(order.loadingDateTime!)}', style: Theme.of(context).textTheme.caption,),
+                  //Text('405km', style: Theme.of(context).textTheme.headline5,),
                 ],
               )
             ),
@@ -53,8 +60,8 @@ class FreightStartEnd extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Expanded(child: Text('서울 서초 강남대로 43길 강남빌딩 B동 102호', style: Theme.of(context).textTheme.headline3,)),
-                  gotoMapBtn(),
+                  Expanded(child: Text('${order.loadingAddress!} ${order.loadingDetailAddress!}', style: Theme.of(context).textTheme.headline3,)),
+                  order.loadingLon!=null ? gotoMapBtn(LatLng(order.loadingLon!, order.loadingLat!)) : gotoMapBtn(const LatLng(37.4873468886489, 127.03086712329379)),
                 ],
               ),
               line(),
@@ -73,7 +80,7 @@ class FreightStartEnd extends StatelessWidget {
               child: const Text('하차', style: TextStyle(color: Colors.white, fontSize: 14),),
             ),
             const SizedBox(width: 10,),
-            Text('11/01 14:30', style: Theme.of(context).textTheme.caption,),
+            Text('${toDayOrYYYYMM(order.unloadingDateTime!)} ${DateFormat('HH:mm').format(order.unloadingDateTime!)}', style: Theme.of(context).textTheme.caption,),
           ],
         ),
         Container(
@@ -83,8 +90,8 @@ class FreightStartEnd extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Expanded(child: Text('부산 해운대구 해운대로 213길 롯데빌딩 EAST 2308호', style: Theme.of(context).textTheme.headline3,)),
-                  gotoMapBtn(),
+                  Expanded(child: Text('${order.unloadingAddress!} ${order.unloadingDetailAddress!}', style: Theme.of(context).textTheme.headline3,)),
+                  order.unloadingLon!=null ? gotoMapBtn(LatLng(order.unloadingLon!, order.unloadingLat!)) : gotoMapBtn(const LatLng(35.17923092120002, 129.12595027491258)),
                 ],
               ),
             ],

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lolab_freight_app/src/components/freight/widget/freight_start_end.dart';
+import 'package:lolab_freight_app/src/controller/delivery_controller.dart';
 import 'package:lolab_freight_app/src/utils/util.dart';
 
 class DeliveryCard extends StatelessWidget {
+  final DeliveryController controller = DeliveryController.to;
+  
   int index;
   late ThemeData themeData;
   DeliveryCard({ Key? key, required this.index }) : super(key: key);
@@ -77,7 +80,7 @@ class DeliveryCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            FreightStartEnd(),
+            FreightStartEnd(order: controller.deliveryList!.value.shipments![index]),
             line(),
             const SizedBox(height: 10,),
             _workAndPrice(context),
