@@ -19,7 +19,7 @@ class RemodeCon extends StatelessWidget {
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(8.0),
         border: Border.all(
-            color: const Color(0xff2a3f85), width: 1, style: BorderStyle.solid),
+            color: const Color(0xff005e35), width: 1, style: BorderStyle.solid),
       ),
       child: Row(
         children: [

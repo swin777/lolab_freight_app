@@ -2,31 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lolab_freight_app/src/controller/delivery_controller.dart';
 import 'delivery_card.dart';
-import 'detail/delivery_payment.dart';
 
 class DeliveryList extends StatelessWidget {
   DeliveryList({ Key? key }) : super(key: key);
 
   final DeliveryController controller = DeliveryController.to;
 
-  Future goFreightDetail(BuildContext context){
-    return showDialog<String>(
-      barrierColor: const Color(0xffedf0f5),
-      context: context,
-      builder: (context) => DeliveryPayment()
-    );
-  }
+  // Future goFreightDetail(BuildContext context){
+  //   return showDialog<String>(
+  //     barrierColor: const Color(0xffedf0f5),
+  //     context: context,
+  //     builder: (context) => DeliveryPayment()
+  //   );
+  // }
   Widget _appBar(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Obx(() => Text("배송 할 화물이 ${controller.deliveryList!.value.shipments!.length}건 있습니다.", style: const TextStyle(fontSize: 20, color: Colors.black))),
-        IconButton(
-          icon: Image.asset("assets/images/btn_money_24.png"),
-          onPressed: () async{
-            await goFreightDetail(context);
-          },
-        ),
+        // IconButton(
+        //   icon: Image.asset("assets/images/btn_money_24.png"),
+        //   onPressed: () async{
+        //     await goFreightDetail(context);
+        //   },
+        // ),
       ],
     );
   }

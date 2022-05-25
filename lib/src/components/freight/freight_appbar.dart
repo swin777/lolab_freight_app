@@ -208,7 +208,7 @@ class FreightAppBar extends StatelessWidget {
                     const SizedBox(width: 10.0),
                     _dropDown('상', const Color(0xff60acff)),
                     const SizedBox(width: 10.0),
-                    _dropDown('하', const Color(0xff2a3f85)),
+                    _dropDown('하', const Color(0xff005e35)),
                     const SizedBox(width: 10.0),
                     ...themaList.map((ele) {
                       return Row(children: [

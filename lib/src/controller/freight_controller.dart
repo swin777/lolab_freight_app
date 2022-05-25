@@ -40,7 +40,6 @@ class FreightController extends GetxController {
       if(list!=null) {
         cursor(list.orders![list.orders!.length-1].orderId);
       }
-    // ignore: empty_catches
     }catch(e){}
   }
 

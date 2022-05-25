@@ -43,7 +43,7 @@ class DeliveryCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
               ),
               padding: const EdgeInsets.all(2),
-              child: const Text('수 > 지', style: TextStyle(color: Color(0xff2a3f85), fontSize: 12),),
+              child: const Text('수 > 지', style: TextStyle(color: Color(0xff005e35), fontSize: 12),),
             ),
             const SizedBox(width: 4,),
             Text('축차', style: themeData.textTheme.caption,),

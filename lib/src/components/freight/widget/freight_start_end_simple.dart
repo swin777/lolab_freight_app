@@ -64,7 +64,7 @@ class FreightStartEndSimple extends StatelessWidget {
             children: [
               label ? Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xff2a3f85),
+                  color: const Color(0xff005e35),
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -106,7 +106,7 @@ class FreightStartEndSimple extends StatelessWidget {
                         padding: const EdgeInsets.all(2),
                         child: Text( //상하차방법
                           order.loadingFreightMethod!.substring(0,1)+' > ' + order.unloadingFreightMethod!.substring(0,1),
-                          style: const TextStyle(color: Color(0xff2a3f85), fontSize: 12),
+                          style: const TextStyle(color: Color(0xff005e35), fontSize: 12),
                         ),
                       ),
                       ...?(order.carOptions?.asMap().entries.map((e) { //차량옵션

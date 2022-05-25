@@ -10,7 +10,7 @@ class DeliveryRepository extends GetConnect {
   @override
   void onInit() {
     allowAutoSignedCert = true;
-    httpClient.baseUrl = globalBaseUrl; 
+    httpClient.baseUrl = globalBaseUrl_epc; 
     httpClient.timeout = globalTimeout;
   }
 

@@ -72,7 +72,7 @@ class FreightStartEnd extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: const Color(0xff2a3f85),
+                color: const Color(0xff005e35),
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(8.0),
               ),

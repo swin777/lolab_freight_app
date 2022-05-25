@@ -184,7 +184,7 @@ class FreightDetailInfo extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4)),
-                  side: BorderSide(color: Color(0xff2a3f85))),
+                  side: BorderSide(color: Color(0xff005e35))),
               primary: Colors.white,
             ),
             onPressed: () {
@@ -195,7 +195,7 @@ class FreightDetailInfo extends StatelessWidget {
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xff2a3f85)),
+                  color: Color(0xff005e35)),
             ),
           ),
         ),
@@ -208,7 +208,7 @@ class FreightDetailInfo extends StatelessWidget {
             Container(
               width: size.width,
               decoration: BoxDecoration(
-                  color: const Color(0xff2a3f85),
+                  color: const Color(0xff005e35),
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(4),
                   boxShadow: const <BoxShadow>[

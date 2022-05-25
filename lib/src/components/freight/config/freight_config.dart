@@ -131,10 +131,10 @@ class _FreightConfigState extends State<FreightConfig> {
                                   const EdgeInsets.symmetric(
                                       vertical: 15, horizontal: 100)),
                               foregroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xff2a3f85)),
+                                  Color(0xff005e35)),
                               side: MaterialStateProperty.all(BorderSide(
                                 width: 1.0,
-                                color: Color(0xff2a3f85),
+                                color: Color(0xff005e35),
                                 style: BorderStyle.solid,
                               ))),
                           onPressed: () {
@@ -249,7 +249,7 @@ class _FreightConfigState extends State<FreightConfig> {
                                   data: CupertinoThemeData(
                                     textTheme: CupertinoTextThemeData(
                                         pickerTextStyle: TextStyle(
-                                            color: Color(0xff2a3f85),
+                                            color: Color(0xff005e35),
                                             fontWeight: FontWeight.w700,
                                             fontSize: 20)),
                                   ),
@@ -298,7 +298,7 @@ class _FreightConfigState extends State<FreightConfig> {
                                     data: CupertinoThemeData(
                                       textTheme: CupertinoTextThemeData(
                                           pickerTextStyle: TextStyle(
-                                              color: Color(0xff2a3f85),
+                                              color: Color(0xff005e35),
                                               fontWeight: FontWeight.w700,
                                               fontSize: 20)),
                                     ),
@@ -327,10 +327,10 @@ class _FreightConfigState extends State<FreightConfig> {
                                 const EdgeInsets.symmetric(
                                     vertical: 15, horizontal: 100)),
                             foregroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xff2a3f85)),
+                                Color(0xff005e35)),
                             side: MaterialStateProperty.all(BorderSide(
                               width: 1.0,
-                              color: Color(0xff2a3f85),
+                              color: Color(0xff005e35),
                               style: BorderStyle.solid,
                             ))),
                         onPressed: () {
@@ -502,10 +502,10 @@ Widget PriceContent(BuildContext context) {
                               const EdgeInsets.symmetric(
                                   vertical: 15, horizontal: 100)),
                           foregroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xff2a3f85)),
+                              Color(0xff005e35)),
                           side: MaterialStateProperty.all(BorderSide(
                             width: 1.0,
-                            color: Color(0xff2a3f85),
+                            color: Color(0xff005e35),
                             style: BorderStyle.solid,
                           ))),
                       onPressed: () {},
@@ -574,58 +574,58 @@ Widget OptionContent(BuildContext context) {
                           ButtonTheme(
                             minWidth: 69.0,
                             height: 34.0,
-                            child: OutlineButton(
+                            child: OutlinedButton(
                               onPressed: () {},
                               child: new Text(
                                 "25톤",
                                 style: new TextStyle(
                                   fontSize: 14.0,
-                                  color: Color(0xff2a3f85),
+                                  color: Color(0xff005e35),
                                 ),
                               ),
-                              borderSide: BorderSide(
-                                color: Color(0xff2a3f85),
-                                width: 1.0,
-                              ),
-                              shape: StadiumBorder(),
+                              // borderSide: BorderSide(
+                              //   color: Color(0xff005e35),
+                              //   width: 1.0,
+                              // ),
+                              // shape: StadiumBorder(),
                             ),
                           ),
                           ButtonTheme(
                             minWidth: 69.0,
                             height: 34.0,
-                            child: OutlineButton(
+                            child: OutlinedButton(
                               onPressed: () {},
                               child: new Text(
                                 "카고",
                                 style: new TextStyle(
                                   fontSize: 14.0,
-                                  color: Color(0xff2a3f85),
+                                  color: Color(0xff005e35),
                                 ),
                               ),
-                              borderSide: BorderSide(
-                                color: Color(0xff2a3f85),
-                                width: 1.0,
-                              ),
-                              shape: StadiumBorder(),
+                              // borderSide: BorderSide(
+                              //   color: Color(0xff005e35),
+                              //   width: 1.0,
+                              // ),
+                              // shape: StadiumBorder(),
                             ),
                           ),
                           ButtonTheme(
                             minWidth: 69.0,
                             height: 34.0,
-                            child: OutlineButton(
+                            child: OutlinedButton(
                               onPressed: () {},
                               child: new Text(
                                 "축차",
                                 style: new TextStyle(
                                   fontSize: 14.0,
-                                  color: Color(0xff2a3f85),
+                                  color: Color(0xff005e35),
                                 ),
                               ),
-                              borderSide: BorderSide(
-                                color: Color(0xff2a3f85),
-                                width: 1.0,
-                              ),
-                              shape: StadiumBorder(),
+                              // borderSide: BorderSide(
+                              //   color: Color(0xff005e35),
+                              //   width: 1.0,
+                              // ),
+                              // shape: StadiumBorder(),
                             ),
                           ),
                         ],
@@ -636,58 +636,58 @@ Widget OptionContent(BuildContext context) {
                           ButtonTheme(
                             minWidth: 69.0,
                             height: 34.0,
-                            child: OutlineButton(
+                            child: OutlinedButton(
                               onPressed: () {},
                               child: new Text(
                                 "무진동",
                                 style: new TextStyle(
                                   fontSize: 14.0,
-                                  color: Color(0xff2a3f85),
+                                  color: Color(0xff005e35),
                                 ),
                               ),
-                              borderSide: BorderSide(
-                                color: Color(0xff2a3f85),
-                                width: 1.0,
-                              ),
-                              shape: StadiumBorder(),
+                              // borderSide: BorderSide(
+                              //   color: Color(0xff005e35),
+                              //   width: 1.0,
+                              // ),
+                              // shape: StadiumBorder(),
                             ),
                           ),
                           ButtonTheme(
                             minWidth: 69.0,
                             height: 34.0,
-                            child: OutlineButton(
+                            child: OutlinedButton(
                               onPressed: () {},
                               child: new Text(
                                 "리프트",
                                 style: new TextStyle(
                                   fontSize: 14.0,
-                                  color: Color(0xff2a3f85),
+                                  color: Color(0xff005e35),
                                 ),
                               ),
-                              borderSide: BorderSide(
-                                color: Color(0xff2a3f85),
-                                width: 1.0,
-                              ),
-                              shape: StadiumBorder(),
+                              // borderSide: BorderSide(
+                              //   color: Color(0xff005e35),
+                              //   width: 1.0,
+                              // ),
+                              // shape: StadiumBorder(),
                             ),
                           ),
                           ButtonTheme(
                             minWidth: 69.0,
                             height: 34.0,
-                            child: OutlineButton(
+                            child: OutlinedButton(
                               onPressed: () {},
                               child: new Text(
                                 "냉장",
                                 style: new TextStyle(
                                   fontSize: 14.0,
-                                  color: Color(0xff2a3f85),
+                                  color: Color(0xff005e35),
                                 ),
                               ),
-                              borderSide: BorderSide(
-                                color: Color(0xff2a3f85),
-                                width: 1.0,
-                              ),
-                              shape: StadiumBorder(),
+                              // borderSide: BorderSide(
+                              //   color: Color(0xff005e35),
+                              //   width: 1.0,
+                              // ),
+                              // shape: StadiumBorder(),
                             ),
                           ),
                         ],
@@ -698,20 +698,20 @@ Widget OptionContent(BuildContext context) {
                           ButtonTheme(
                             minWidth: 69.0,
                             height: 34.0,
-                            child: OutlineButton(
+                            child: OutlinedButton(
                               onPressed: () {},
                               child: new Text(
                                 "냉동",
                                 style: new TextStyle(
                                   fontSize: 14.0,
-                                  color: Color(0xff2a3f85),
+                                  color: Color(0xff005e35),
                                 ),
                               ),
-                              borderSide: BorderSide(
-                                color: Color(0xff2a3f85),
-                                width: 1.0,
-                              ),
-                              shape: StadiumBorder(),
+                              // borderSide: BorderSide(
+                              //   color: Color(0xff005e35),
+                              //   width: 1.0,
+                              // ),
+                              // shape: StadiumBorder(),
                             ),
                           ),
                         ],

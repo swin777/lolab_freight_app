@@ -5,9 +5,9 @@ import 'package:lolab_freight_app/src/components/freight/widget/freight_start_en
 import 'package:lolab_freight_app/src/components/freight/widget/freight_start_end_simple.dart';
 import 'package:lolab_freight_app/src/controller/delivery_payment_controller.dart';
 
-class DeliveryPaymentDay extends StatelessWidget {
-  DeliveryPaymentDay({Key? key, required this.close}) : super(key: key);
-  final DeliveryPaymentController controller = Get.find<DeliveryPaymentController>();
+class PaymentDay extends StatelessWidget {
+  PaymentDay({Key? key, required this.close}) : super(key: key);
+  final PaymentController controller = Get.find<PaymentController>();
   NumberFormat f = NumberFormat('###,###,###,###');
 
   VoidCallback close;
@@ -40,13 +40,13 @@ class DeliveryPaymentDay extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text("배송 화물 ", style: TextStyle(color: Color(0xff666666), fontSize: 16),),
-        Text(f.format(controller.dayCnt.value), style: const TextStyle(color: Color(0xff2a3f85), fontSize: 16),),
+        Text(f.format(controller.dayCnt.value), style: const TextStyle(color: Color(0xff005e35), fontSize: 16),),
         const Text("건", style: TextStyle(color: Color(0xff666666), fontSize: 16),),
         const SizedBox(width: 4,),
         Image.asset("assets/images/img_line_12.png"),
         const SizedBox(width: 4,),
         const Text("정산금액  ", style: TextStyle(color: Color(0xff666666), fontSize: 16),),
-        Text(f.format(780000), style: const TextStyle(color: Color(0xff2a3f85), fontSize: 16),),
+        Text(f.format(780000), style: const TextStyle(color: Color(0xff005e35), fontSize: 16),),
         const Text("원", style: TextStyle(color: Color(0xff666666), fontSize: 16, height: 1.3),),
       ],
     );

@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DeliveryPaymentController extends GetxController {
-  static DeliveryPaymentController get to => Get.find();
+class PaymentController extends GetxController {
+  static PaymentController get to => Get.find();
   RxInt cnt = 20.obs;
   RxInt dayCnt = 5.obs;
   Rx<DateTime> dt = DateTime.now().obs;
@@ -12,7 +12,7 @@ class DeliveryPaymentController extends GetxController {
 
   @override
   void onInit() {
-    print("DeliveryPaymentController Init");
+    print("PaymentController Init");
     //search();
     _event();
     super.onInit(); 
@@ -32,7 +32,7 @@ class DeliveryPaymentController extends GetxController {
 
   @override
   void onClose() {
-    print("DeliveryPaymentController Close");
+    print("PaymentController Close");
     super.onClose();
   }
 }

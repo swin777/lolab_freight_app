@@ -17,6 +17,8 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../models/route/custom_point.dart';
+
 // ignore: must_be_immutable
 class FreightPostionMap extends StatelessWidget {
   FreightPostionMap({Key? key, this.arg}) : super(key: key) {
@@ -25,68 +27,36 @@ class FreightPostionMap extends StatelessWidget {
   }
   late MaplibreMapController maplibreMapController;
   FreightMapController mapController = Get.put(FreightMapController());
-  //FreightDetailController controller = FreightDetailController.to;
   late Size size;
   Object? arg;
   Symbol? symbol;
   SymbolOptions? symbolOptions;
   String? styleAbsoluteFilePath;
   Order? order;
+  dynamic styleData;
+  List<String> dtBldLine = [];
+  List<String> dtBldPoly = [];
 
   void simulationRedy() async {
+    Rect rect = Rect.fromLTRB(0, 0, size.width, size.height);
+    List result = await maplibreMapController.queryRenderedFeaturesInRect(rect, ['routeLineLayer'], null);
     mapController.simulationMode.toggle();
     Future.delayed(const Duration(milliseconds: 500), () {
       maplibreMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-            target: LatLng(order!.loadingLat!,
-                order!.loadingLon!),
-            tilt: mapController.simulationMode.value ? 60 : 0,
-            zoom: 16.5),
+          target: LatLng(order!.loadingLat!, order!.loadingLon!),
+          tilt: mapController.simulationMode.value ? 60 : 0,
+          zoom: 16.5),
       ));
     });
   }
 
-  void getRoute() async {
-    RouteInfo routeInfo = await mapController.getRoute();
-    List<RoutePoint> routePointList = routeInfo.routePoints!;
-    List<List<double>> latalngList = routePointList.map((e) => [e.lng, e.lat]).toList();
-    final String tileStyle2 = await rootBundle.loadString('assets/style/tileStyle2.json');
-    final String tileStyle = await rootBundle.loadString('assets/style/tileStyle.json');
-    final data2 = await json.decode(tileStyle2);
-    final data = await json.decode(tileStyle);
-    data2['sources']['geojson_route']['data']['geometry']['coordinates'] = latalngList;
-    data['sources']['geojson_route']['data']['geometry']['coordinates'] = latalngList;
-
-    getApplicationDocumentsDirectory().then((dir) async {
-      String documentDir = dir.path;
-      String stylesDir = '$documentDir/styles';
-      await Directory(stylesDir).create(recursive: true);
-      File styleFile2 = File('$stylesDir/tileStyleTmp2.json');
-      await styleFile2.writeAsString(json.encode(data));
-      File styleFile = File('$stylesDir/tileStyleTmp.json');
-      await styleFile.writeAsString(json.encode(data));
-
-      mapController.path.add(styleFile2.path);
-      mapController.path.add(styleFile.path);
-
-      mapController.styleString.value = styleFile2.path;
-      mapController.routeComplate.value = true;
-
-      //maplibreMapController.addRouteLayer(featureJson)
-
-      maplibreMapController.animateCamera(CameraUpdate.newLatLngBounds(LatLngBounds(northeast: routeInfo.northeast!,southwest: routeInfo.southwest!)));
-    });
-  }
+  
 
   void _onMapCreated(MaplibreMapController controller) async {
     maplibreMapController = controller;
     mapController.maplibreMapController = controller;
-    //symbolOptions = _getSymbolOptions("assets/images/poi.png");
-    // Future.delayed(const Duration(milliseconds: 500), () async {
-    //   symbol = await maplibreMapController.addSymbol(symbolOptions!);
-    //   //maplibreMapController.removeSymbol(symbol!);
-    // });
-    getRoute();
+    mapController.drawRoute();
   }
 
   SymbolOptions _getSymbolOptions(String iconImage) {
@@ -99,30 +69,66 @@ class FreightPostionMap extends StatelessWidget {
   }
 
   void _onCameraIdle() {
-    double? tilt = maplibreMapController.cameraPosition?.tilt;
-    if (tilt != null) {
-      if (tilt == 0 && mapController.styleIndex.value != 0) {
-        mapController.setStyleIndex(0);
+    extrusionToggle();
+  }
+
+  void _onStyleLoadedCallback() async{
+    final String tileStyle = await rootBundle.loadString('assets/style/tileStyleAll.json');
+    styleData = await json.decode(tileStyle);
+    List layers = styleData['layers'] as List;
+
+    for (var layer in layers) {
+      String layerId = layer['id'] as String;
+      if(layerId.contains("dt_bld_poly")){
+        String type = layer['type'] as String;
+        if(type=='line'){
+          dtBldLine.add(layerId);
+        }else{
+          dtBldPoly.add(layerId);
+        }
       }
-      if (tilt > 0 && mapController.styleIndex.value == 0) {
-        mapController.setStyleIndex(1);
+    }
+    mapController.setStyleIndex(1);
+    extrusionToggle();
+  }
+
+  void extrusionToggle(){
+    if(styleData!=null){
+      double? tilt = maplibreMapController.cameraPosition?.tilt;
+      if (tilt != null) {
+        if (tilt == 0 && mapController.styleIndex.value != 0) {
+          mapController.setStyleIndex(0);
+          for (var layerId in dtBldLine) {
+            maplibreMapController.visiableLayer(layerId);
+          }
+          for (var layerId in dtBldPoly) {
+            maplibreMapController.noneVisiableLayer(layerId);
+          }
+        }
+        if (tilt > 0 && mapController.styleIndex.value == 0) {
+          mapController.setStyleIndex(1);
+          for (var layerId in dtBldLine) {
+            maplibreMapController.noneVisiableLayer(layerId);
+          }
+          for (var layerId in dtBldPoly) {
+            maplibreMapController.visiableLayer(layerId);
+          }
+        }
       }
     }
   }
 
-  void _onStyleLoadedCallback() {}
-
   MaplibreMap maplibreMap(String styleUrl) {
     CameraPosition cameraPosition = CameraPosition(
-        target: LatLng(order!.loadingLat!,
-            order!.loadingLon!),
+        target: LatLng(order!.loadingLat!, order!.loadingLon!),
         zoom: 16.5,
         tilt: 0);
     return MaplibreMap(
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoadedCallback,
         onCameraIdle: _onCameraIdle,
-        styleString: styleUrl,
+        //styleString: styleUrl,
+        styleString: 'assets/style/tileStyleAll.json',
         trackCameraPosition: true,
         initialCameraPosition: cameraPosition,
         logoViewMargins: const Point(0, -100),
@@ -131,125 +137,127 @@ class FreightPostionMap extends StatelessWidget {
 
   Widget upPoisionInfo(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(20),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1,
-            color: const Color(0xffcccccc),
-          ),
-          color: Colors.white,
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(8.0),
+      padding: const EdgeInsets.all(20),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1,
+          color: const Color(0xffcccccc),
         ),
-        child: Column(children: [
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xff60acff),
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(8.0),
+        color: Colors.white,
+        shape: BoxShape.rectangle,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Column(children: [
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xff60acff),
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              padding: const EdgeInsets.all(2),
+              child: const Text(
+                '상차',
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Row(
+              children: [
+                Text(
+                  '${toDayOrYYYYMM(order!.loadingDateTime ?? DateTime.now())} ${DateFormat('HH:mm').format(order!.loadingDateTime ?? DateTime.now())}',
+                  style: Theme.of(context).textTheme.caption,
                 ),
-                padding: const EdgeInsets.all(2),
-                child: const Text(
-                  '상차',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                Text(
+                  ' 405km',
+                  style: Theme.of(context).textTheme.headline5,
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                  child: Row(
-                children: [
-                  Text(
-                    '${toDayOrYYYYMM(order!.loadingDateTime ?? DateTime.now())} ${DateFormat('HH:mm').format(order!.loadingDateTime ?? DateTime.now())}',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  Text(
-                    ' 405km',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  Expanded(
-                      child: Obx(() => Container(
-                          height: 30,
-                          alignment: Alignment.centerRight,
-                          child: mapController.routeComplate.value
-                              ? ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(4))),
-                                    textStyle: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                    primary: Colors.pink,
-                                  ),
-                                  onPressed: () {
-                                    simulationRedy();
-                                  },
-                                  child: const Text('모이주행'),
-                                )
-                              : const SizedBox())))
-                ],
-              )),
-            ],
-          ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                      child: Text(
-                    '${order!.loadingAddress!} ${order!.loadingDetailAddress!}',
-                    style: Theme.of(context).textTheme.headline3,
-                  )),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            side: BorderSide(color: Color(0xff2a3f85))),
-                        primary: Colors.white,
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        '주소 복사',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xff2a3f85)),
-                      ),
+                Expanded(
+                    child: Obx(() => Container(
+                        height: 30,
+                        alignment: Alignment.centerRight,
+                        child: mapController.routeComplate.value
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(4))),
+                                  textStyle: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                  primary: Colors.pink,
+                                ),
+                                onPressed: () {
+                                  simulationRedy();
+                                },
+                                child: const Text('모이주행'),
+                              )
+                            : const SizedBox())))
+              ],
+            )),
+          ],
+        ),
+        Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                    child: Text(
+                  '${order!.loadingAddress!} ${order!.loadingDetailAddress!}',
+                  style: Theme.of(context).textTheme.headline3,
+                )),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4)),
+                          side: BorderSide(color: Color(0xff005e35))),
+                      primary: Colors.white,
+                    ),
+                    onPressed: () {},
+                    child: const Text(
+                      '주소 복사',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff005e35)),
                     ),
                   ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
-                        textStyle: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {},
-                      child: const Text('길안내'),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(4))),
+                      textStyle: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ]));
+                    onPressed: () {},
+                    child: const Text('길안내'),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+        ]
+      )
+    );
   }
 
   Widget downPoisionInfo(BuildContext context) {
@@ -267,7 +275,7 @@ class FreightPostionMap extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xff2a3f85),
+                  color: const Color(0xff005e35),
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -335,7 +343,7 @@ class FreightPostionMap extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(4)),
-                            side: BorderSide(color: Color(0xff2a3f85))),
+                            side: BorderSide(color: Color(0xff005e35))),
                         primary: Colors.white,
                       ),
                       onPressed: () {},
@@ -344,7 +352,7 @@ class FreightPostionMap extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xff2a3f85)),
+                            color: Color(0xff005e35)),
                       ),
                     ),
                   ),
@@ -379,7 +387,7 @@ class FreightPostionMap extends StatelessWidget {
         //alignment: Alignment.center,
         children: <Widget>[
           Obx(() => FractionallySizedBox(
-                heightFactor: mapController.simulationMode.value ? 1.5 : 1.0,
+                heightFactor: mapController.simulationMode.value ? 1.75 : 1.0,
                 widthFactor: 1.0,
                 alignment: Alignment.topCenter,
                 child: mapController.styleString.value != ""
@@ -463,7 +471,7 @@ class FreightPostionMap extends StatelessWidget {
               : const SizedBox()),
           Obx(() => mapController.playMode.value
               ? Positioned(
-                  top: constraints.maxHeight * 1.5 / 2 - 25 ,
+                  top: constraints.maxHeight * 1.75 / 2 - 25 ,
                   left: constraints.maxWidth / 2 - 25,
                   child: Image.asset(
                     "assets/images/car.png",

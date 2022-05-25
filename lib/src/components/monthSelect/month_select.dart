@@ -40,13 +40,13 @@ class _MonthSelectState extends State<MonthSelect> {
   }
 
   Widget list(Orientation orientation) => ScrollablePositionedList.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: numberOfItems,
-        itemBuilder: (context, index) => item(index, orientation),
-        itemScrollController: itemScrollController,
-        itemPositionsListener: itemPositionsListener,
-        reverse: reversed,
-      );
+    scrollDirection: Axis.horizontal,
+    itemCount: numberOfItems,
+    itemBuilder: (context, index) => item(index, orientation),
+    itemScrollController: itemScrollController,
+    itemPositionsListener: itemPositionsListener,
+    reverse: reversed,
+  );
 
   void scrollTo(int index) => itemScrollController.scrollTo(
       index: index,
@@ -60,9 +60,9 @@ class _MonthSelectState extends State<MonthSelect> {
   /// Generate item number [i].
   Widget item(int i, Orientation orientation) {
     TextStyle textStyle = selectMonth==i ?
-      TextStyle(color: Color(0xff2a3f85), fontWeight: FontWeight.bold, fontSize: 18)
+      const TextStyle(color: Color(0xff005e35), fontWeight: FontWeight.bold, fontSize: 18)
       :
-      TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18); 
+      const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18); 
 
     String zeroStr = i<11 ? "0" : "";
     return SizedBox(
@@ -101,13 +101,13 @@ class _MonthSelectState extends State<MonthSelect> {
   
   @override
   Widget build(BuildContext context){
-    WidgetsBinding.instance!.addPostFrameCallback((_) => scrollTo(selectMonth));
+    WidgetsBinding.instance.addPostFrameCallback((_) => scrollTo(selectMonth));
     return  OrientationBuilder(
       builder: (context, orientation) => Container(
-        color: Color(0xff2a3f85),
+        color: const Color(0xff005e35),
         child: Column(
           children: <Widget>[
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             SizedBox(
               height: 50,
               child: list(orientation),

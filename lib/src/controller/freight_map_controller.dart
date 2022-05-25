@@ -33,6 +33,24 @@ class FreightMapController extends GetxController {
   RxString tbtName = "".obs;
   Rx<Order>? order = Order().obs;
 
+  late List<CustomPoint> smoothRoute; //smooth된 utmk
+  late List<CustomPoint> latLngsmoothRoute; //smooth된 utmk로 위경도로 변경
+  late List<CustomPoint> latLngRoute; //utmk에서 위경도로 변경
+  late List<List<double>> latalngList;
+
+  final _line = {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": []
+        }
+      }
+    ]
+  };
+
   @override
   void onInit() async{
     Wakelock.enable();
@@ -50,13 +68,55 @@ class FreightMapController extends GetxController {
     super.onClose();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
+  
+  void drawRoute() async {
+    RouteInfo routeInfo = await getRoute();
+    routeComplate.value = true;
+
+    (_line['features'] as List)[0]['geometry']['coordinates'] = latalngList;
+    await maplibreMapController.addGeoJsonSource("route", _line);
+    await maplibreMapController.addLineLayer(
+      "route", "routeLineLayer",
+      LineLayerProperties(
+        lineColor: const Color(0xff005e35).toHexStringRGB(),
+        lineWidth: 10
+      ),
+    );
+    await maplibreMapController.addGeoJsonSource("route2", _line);
+    await maplibreMapController.addSymbolLayer(
+      "route2", "routeArrowLayer",
+      const SymbolLayerProperties(
+        symbolPlacement: "line",
+        symbolSpacing: 100,
+        iconImage: "ico_001",
+        iconSize: 0.5,
+        //iconOpacity: 0.5
+      ),
+    );
+
+    maplibreMapController.animateCamera(CameraUpdate.newLatLngBounds(LatLngBounds(northeast: routeInfo.northeast!,southwest: routeInfo.southwest!))); 
+  }
 
   Future<RouteInfo> getRoute() async{
-    //Order order = detailController.order!.value;
-    //RouteResitory.to.getRoute(order.loadingLat!, order.loadingLon!, order.unloadingLat!, order.unloadingLon!);
-    //List<LatLng>? latalngList = await RouteResitory.to.getRoute(37.4873468886489, 127.03086712329379, 35.17923092120002, 129.12595027491258);
-    //routePointList = await RouteResitory.to.getRoute(37.47136509899208, 127.02940905611158, 37.35878209462215, 127.11491971884783);
     routeInfo = await RouteResitory.to.getRoute(order!.value.loadingLat!, order!.value.loadingLon!, order!.value.unloadingLat!, order!.value.unloadingLon!);
+
+    List<CustomPoint> utmkRoute = routeInfo!.routePoints!.map((e) {
+      Point p = latlngToUtmk(e.lat, e.lng);
+      return CustomPoint(x:p.x, y:p.y, roadName:e.roadName, tbt:e.tbt, farTbt:e.farTbt);
+    }).toList();
+
+    latLngRoute = utmkRoute.map((CustomPoint e) {
+      Point p = utmkTolatlng(e.x, e.y);
+      return CustomPoint(x:p.x, y:p.y);
+    }).toList();
+    latalngList = latLngRoute.map((CustomPoint e) => [e.x, e.y]).toList();
+
+    smoothRoute = smooth(utmkRoute);
+    latLngsmoothRoute = smoothRoute.map((CustomPoint e) {
+      Point p = utmkTolatlng(e.x, e.y);
+      return CustomPoint(x:p.x, y:p.y, orgNumber: e.orgNumber);
+    }).toList();
+
     return Future.value(routeInfo);
   }
 
@@ -75,17 +135,7 @@ class FreightMapController extends GetxController {
       timer!.pause();
     } else {
       if (timer == null) {
-        List<CustomPoint> utmkRoute = routeInfo!.routePoints!.map((e) {
-          Point p = latlngToUtmk(e.lat, e.lng);
-          return CustomPoint(x:p.x, y:p.y, roadName:e.roadName, tbt:e.tbt, farTbt:e.farTbt);
-        }).toList();
-        List<CustomPoint> smoothRoute = smooth(utmkRoute);
-        List<CustomPoint> latLngsmoothRoute = smoothRoute.map((CustomPoint e) {
-          Point p = utmkTolatlng(e.x, e.y);
-          return CustomPoint(x:p.x, y:p.y);
-        }).toList();
-        
-        timer = PausableTimer(const Duration(milliseconds: 20), () async {
+        timer = PausableTimer(const Duration(milliseconds: 100), () async {
           int number = timer!.tick;
           if (number == latLngsmoothRoute.length - 1) {
             timer!.cancel();
@@ -100,35 +150,30 @@ class FreightMapController extends GetxController {
           if(smoothRoute[number].farTbt!=null && smoothRoute[number].farTbt!.type!=998){
             farTbtUrl('https://map.gis.kt.com/images/tbt-images/${tbtIcon['type_${smoothRoute[number].farTbt!.type}']}.png');
           }
+
+          List<List<double>> sub = latalngList.sublist(latLngsmoothRoute[number].orgNumber!);
+          sub[0] = [latLngsmoothRoute[number].x, latLngsmoothRoute[number].y];
+          (_line['features'] as List)[0]['geometry']['coordinates'] = sub; 
+          await maplibreMapController.setGeoJsonSource("route", _line);
+          
+          try{
+            LatLngBounds bounds = await maplibreMapController.getVisibleRegion();
+            debugPrint(bounds.northeast.latitude.toString() + ", " + bounds.northeast.longitude.toString() 
+            + " : " +  bounds.southwest.latitude.toString() + ", " + bounds.southwest.longitude.toString());
+          }catch(e){
+            debugPrint(e.toString());
+          }
           
           double bearing = atan2(smoothRoute[number + 1].x - smoothRoute[number].x,smoothRoute[number + 1].y - smoothRoute[number].y) * (180 / pi);
-          // print('${maplibreMapController.cameraPosition!.bearing} , ${360+bearing} ==> ${maplibreMapController.cameraPosition!.bearing - (360+bearing)}');
-          // if((maplibreMapController.cameraPosition!.bearing - (360+bearing)).abs() < 2 && missMatch<50){
-          //   bearing = maplibreMapController.cameraPosition!.bearing;
-          //   missMatch++;
-          // }
-          // if(missMatch>49){
-          //     missMatch = 0;
-          // }
           maplibreMapController.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(
               bearing: bearing,
               target: LatLng(latLngsmoothRoute[number].y, latLngsmoothRoute[number].x), tilt: 60, zoom: 17.5
             ),
           ));
-          // symbol ??= await maplibreMapController.addSymbol(SymbolOptions(
-          //   geometry: LatLng(
-          //       latLngsmoothRoute[number].y, latLngsmoothRoute[number].x),
-          //   iconImage: "assets/images/car.png",
-          //   iconSize: 0.6,
-          // ));
-          // maplibreMapController.updateSymbol(
-          //   symbol!,
-          //   SymbolOptions(
-          //     geometry: LatLng(
-          //     latLngsmoothRoute[number].y, latLngsmoothRoute[number].x),
-          //   )
-          // );
+        
+          
+          
           timer!.reset();
           timer!.start();
         })
@@ -145,9 +190,11 @@ class FreightMapController extends GetxController {
     utmkRouteList.asMap().entries.forEach((element) {
       if (utmkRouteList.length > element.key + 1) {
         CustomPoint point = element.value;
+        point.orgNumber = element.key;
         CustomPoint netxPoint = utmkRouteList[element.key + 1];
+        netxPoint.orgNumber = element.key;
         double length = twoPointLength(point, netxPoint);
-        towPointSpint(point, netxPoint, length, partPath);
+        towPointSpint(point, netxPoint, length, partPath, element.key);
       }
     });
     return partPath;
@@ -157,15 +204,15 @@ class FreightMapController extends GetxController {
     return sqrt(pow((p1.x - p2.x).abs(), 2) + pow((p1.y - p2.y).abs(), 2)); //* 20000;
   }
 
-  void towPointSpint(CustomPoint p1, CustomPoint p2, double length, List<CustomPoint> result) {
+  void towPointSpint(CustomPoint p1, CustomPoint p2, double length, List<CustomPoint> result, int idx) {
     int max = (length / 1).round();
     for (int i = 0; i < max - 1; i++) {
-      //if(i%1==0){
+      if(i%6==0){
         result.add(CustomPoint(
           x: (p2.x * (i) / max) + (p1.x * (max - i) / max), y: (p2.y * (i) / max) + (p1.y * (max - i) / max), 
-          roadName: p1.roadName, tbt:p1.tbt, farTbt:p1.farTbt)
-        );
-      //}
+          roadName: p1.roadName, tbt:p1.tbt, farTbt:p1.farTbt, orgNumber:idx
+        ));
+      }
     }
   }
 }

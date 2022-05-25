@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:lolab_freight_app/src/models/freight/order.dart';
 import 'package:lolab_freight_app/src/models/freight/orderList.dart';
@@ -14,12 +15,13 @@ class FreigntRepository extends GetConnect {
   @override
   void onInit() {
     allowAutoSignedCert = true;
-    //httpClient.baseUrl = globalBaseUrl; 
+    httpClient.baseUrl = globalBaseUrl_epc; 
     httpClient.timeout = globalTimeout;
   }
 
   Future<OrderList?> orderList({OrderListParam? orderListParam, String? cursor}) async{
-    String url = "https://211.253.29.154/v1/orders/freight${orderListParam!.makrParameter(cursor)}";
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation, forceAndroidLocationManager: false);
+    String url = "/v1/orders/freight${orderListParam!.makrParameter(cursor, position.longitude, position.latitude)}";
     final response = await get(url, headers: globalHeaders);
     if (response.status.hasError) {
       return Future.error(response.statusText!);
@@ -31,7 +33,7 @@ class FreigntRepository extends GetConnect {
   }
 
   Future<Order?> orderDetail(String orderId) async{
-    String url = "https://211.253.29.154/v1/orders/freight/$orderId";
+    String url = "/v1/orders/freight/$orderId";
     final response = await get(url, headers: globalHeaders);
     if (response.status.hasError) {
       return Future.error(response.statusText!);
