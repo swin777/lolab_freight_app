@@ -13,7 +13,7 @@ void main() {
 
 Widget Splash() { 
   return SplashScreenView(
-    navigateRoute: Login(),
+    navigateRoute: const Login(),
     duration: 2000,
     imageSize: 130,
     imageSrc: "assets/images/kt_logo.png",
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: createMaterialColor(const Color(0xff005e35)), //0xff2a3f85
+        primarySwatch: createMaterialColor(const Color(0xff005e35)), //
         scaffoldBackgroundColor: Colors.grey[200],
         appBarTheme: AppBarTheme(backgroundColor: Colors.grey[200],),
         textTheme: const TextTheme(
@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: "/splash", page: () => Splash()),
         GetPage(name: "/", page: () => const App()),
+        GetPage(name: "/login", page: () => const Login()),
       ],
     );
   }

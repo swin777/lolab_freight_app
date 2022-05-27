@@ -153,7 +153,7 @@ class FreightPostionMap extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: const Color(0xff60acff),
+                color: const Color(0xff63512b),
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(8.0),
               ),

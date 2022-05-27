@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lolab_freight_app/src/components/utils/message_popup.dart';
+import 'package:lolab_freight_app/src/globalVariables.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum RouteName {Freight, Delivery, Payment, Etc} 
 
@@ -12,6 +14,16 @@ class AppController extends GetxController {
   RxString access_token = "".obs;
   RxString refresh_token = "".obs;
   List<int> bottomHistory = [0];
+
+  void allInit() async{
+    access_token.value = "";
+    refresh_token.value = "";
+    currentIndex.value = 0;
+    bottomHistory = [0];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('carOwner');
+    setGlobalHeaders({...globalHeaders, 'Authorization': ''});
+  }
 
   void changePageIndex(int index, {bool hasGesture = true}) {
     currentIndex(index);
@@ -25,7 +37,6 @@ class AppController extends GetxController {
     //   bottomHistory.add(index);
     //   print(bottomHistory);
     // }
-    
   }
 
   Future<bool> willPopScope() async{

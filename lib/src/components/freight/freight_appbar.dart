@@ -100,7 +100,7 @@ class FreightAppBar extends StatelessWidget {
                     const Text(
                       '주변10km',
                       style: TextStyle(
-                          color: Colors.blueAccent,
+                          color: Colors.black54,
                           fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -125,7 +125,7 @@ class FreightAppBar extends StatelessWidget {
                     const Text(
                       '주변20km',
                       style: TextStyle(
-                          color: Colors.blueAccent,
+                          color: Colors.black54,
                           fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -150,7 +150,7 @@ class FreightAppBar extends StatelessWidget {
                     const Text(
                       '의정부주변',
                       style: TextStyle(
-                          color: Colors.blueAccent,
+                          color: Colors.black54,
                           fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -173,7 +173,7 @@ class FreightAppBar extends StatelessWidget {
         child: Text(
           text,
           style: const TextStyle(
-              color: Colors.blueAccent,
+              color: Colors.black54,
               fontWeight: FontWeight.bold,
               fontSize: 16),
         ),
@@ -206,9 +206,9 @@ class FreightAppBar extends StatelessWidget {
                     const SizedBox(width: 10.0),
                     _bookMark(),
                     const SizedBox(width: 10.0),
-                    _dropDown('상', const Color(0xff60acff)),
+                    _dropDown('상', const Color(0xff63512b)),
                     const SizedBox(width: 10.0),
-                    _dropDown('하', const Color(0xff005e35)),
+                    _dropDown('하', const Color(0xff918772)),
                     const SizedBox(width: 10.0),
                     ...themaList.map((ele) {
                       return Row(children: [

@@ -49,4 +49,17 @@ class LoginRepository extends GetConnect {
       }
     }
   }
+
+  Future<Map<String, dynamic>?> logout() async{
+    final response = await get("/v1/carown/logout", headers: globalHeaders);
+    if (response.status.hasError) {
+      return {"result":false};
+    } else{
+      if (response.body != null && response.body['resultMsg'] ) {
+        return {"result":true};
+      }else{
+        return {"result":false};
+      }
+    }
+  }
 }									

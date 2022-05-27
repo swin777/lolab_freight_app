@@ -45,7 +45,7 @@ class Freight extends StatelessWidget {
                   expandedHeight: 173,
                   collapsedHeight: 173,
                 ),
-                controller.orderList!.value.orders!.isEmpty 
+                controller.orderList!.value.orders!.isEmpty
                 ?
                 SliverToBoxAdapter(
                   child: SizedBox(
@@ -55,7 +55,8 @@ class Freight extends StatelessWidget {
                       children: [
                         Image.asset('assets/images/icon_nodata.png', width: 48, height: 48),
                         const SizedBox(height: 8,),
-                        const Text('배송 가능한 화물이 없습니다.', style: TextStyle(color: Color(0xff999999), fontWeight: FontWeight.bold, fontSize: 16),),
+                        //const Text('배송 가능한 화물이 없습니다.', style: TextStyle(color: Color(0xff999999), fontWeight: FontWeight.bold, fontSize: 16),),
+                        Text(!controller.calling.value ? '배송 가능한 화물이 없습니다.' : '조회중', style: TextStyle(color: Color(0xff999999), fontWeight: FontWeight.bold, fontSize: 16),),
                       ],
                     ),
                   ),
@@ -76,16 +77,17 @@ class Freight extends StatelessWidget {
                 )
               ],
             ),
-            onRefresh: () => Future.microtask(() => controller.getOrderList())
+            //onRefresh: () => Future.microtask(() => controller.getOrderList())
+            onRefresh: controller.getOrderList
           ),
           Positioned(
             bottom: 8,
             right: 0,
             child: SizedBox(
-              height: 50,
+              height: 64,
               child: MaterialButton(
                 onPressed: () => controller.getOrderList(),
-                child: Image.asset("assets/images/btn_floating_refresh.png")
+                child: Image.asset("assets/images/btn_floating_refresh_default.png")
               ),
             ),
           ),

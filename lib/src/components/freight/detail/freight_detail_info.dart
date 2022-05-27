@@ -225,7 +225,7 @@ class FreightDetailInfo extends StatelessWidget {
               child: Obx(() => Container(
                     width: (size.width - 48) * controller.timeRate.value,
                     decoration: BoxDecoration(
-                      color: const Color(0xff60acff),
+                      color: const Color(0xff63512b),
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(4),
                     ),

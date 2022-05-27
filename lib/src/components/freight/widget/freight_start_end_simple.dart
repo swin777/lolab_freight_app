@@ -30,7 +30,7 @@ class FreightStartEndSimple extends StatelessWidget {
             children: [
               label ? Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xff60acff),
+                  color: const Color(0xff63512b), //0xff60acff -> 0xff63512b
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -64,7 +64,7 @@ class FreightStartEndSimple extends StatelessWidget {
             children: [
               label ? Container(
                 decoration: BoxDecoration(
-                  color: const Color(0xff005e35),
+                  color: const Color(0xff918772), //0xff005e35 --> 0xff918772
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(8.0),
                 ),

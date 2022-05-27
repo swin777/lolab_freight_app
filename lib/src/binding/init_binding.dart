@@ -9,9 +9,9 @@ import 'package:lolab_freight_app/src/repository/routeRepository.dart';
 class InitBinding implements Bindings {
   @override
   void dependencies() {
-    Get.put(FreigntRepository(), permanent: true);
-    Get.put(DeliveryRepository(), permanent: true);
-    Get.put(RouteResitory(), permanent: true);
+    Get.put(FreigntRepository(), permanent: false);
+    Get.put(DeliveryRepository(), permanent: false);
+    Get.put(RouteResitory(), permanent: false);
     Get.put(LoginRepository());
     Get.put(AppController());
     Get.put(LoginController());

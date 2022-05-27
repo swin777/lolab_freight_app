@@ -11,12 +11,12 @@ class FreightController extends GetxController {
   Rx<OrderList>? orderList = OrderList(orders: []).obs;
   Rx<OrderListParam> orderListParam = OrderListParam(yearMonthDay: DateTime.now(),).obs;
   RxString cursor = "".obs;
+  RxBool calling = false.obs;
 
   @override
   void onInit() {
     _event();
     ever(orderListParam, (_) {
-      cursor("");
       getOrderList();
     });
     super.onInit(); 
@@ -25,22 +25,32 @@ class FreightController extends GetxController {
   void _event() {
     scrollController.addListener(() {
       if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-        getOrderList();
+        getOrderList(cursorRemove:false);
       }
     });
   } 
 
-  void getOrderList() async{
+  Future<void> getOrderList({bool cursorRemove = true}) async{
+    calling.value = true;
     try{
+      if(cursorRemove){
+        orderList?.value.orders?.clear();
+        cursor.value = '';
+      }
       OrderList? list = await FreigntRepository.to.orderList(
         orderListParam: orderListParam.value,
         cursor: cursor.value
       );
-      orderList?.value = list!;
-      if(list!=null) {
-        cursor(list.orders![list.orders!.length-1].orderId);
+      calling.value = false;
+      //if(list!.orders!.length > 0 && list.orders![list.orders!.length-1].orderId == cursor.value){
+      if(list!.orders!.isNotEmpty && list.orders![list.orders!.length-1].orderId == cursor.value){
+        return;
       }
-    }catch(e){}
+      orderList?.update((val) => val!.orders!.addAll(list.orders!));
+      cursor(list.orders![list.orders!.length-1].orderId);
+    }catch(e){
+      calling.value = false;
+    }
   }
 
   @override
