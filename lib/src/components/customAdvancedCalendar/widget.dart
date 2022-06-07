@@ -141,8 +141,8 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
                   valueListenable: _monthViewCurrentPage,
                   builder: (_, value, __) {
                     return Header(
-                      monthDate:
-                          _monthRangeList[_monthViewCurrentPage.value].firstDay,
+                      monthDate: _monthRangeList[_monthViewCurrentPage.value].firstDay,
+                      selectDate: _controller.value,
                       onPressed: _handleTodayPressed,
                     );
                   },

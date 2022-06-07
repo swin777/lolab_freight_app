@@ -5,8 +5,9 @@ import 'package:json_annotation/json_annotation.dart';
 class OrderListParam {
   DateTime? yearMonthDay = DateTime.now();
   String? loadingArea;
-  int? loadingRadius;
+  int? loadingRadius = 10000;
   String? unloadingArea;
+  int? unloadingRadius = 10000;
   String? carModel;
   String? carType;
   List<String>? carOptions;
@@ -16,6 +17,7 @@ class OrderListParam {
   bool? excludeHandworkFreight;
   double? lat;
   double? lon;
+  int? limit;
 
   OrderListParam({
     this.yearMonthDay,
@@ -30,13 +32,14 @@ class OrderListParam {
     this.minDeliveryCharge,
     this.excludeHandworkFreight,
     this.lat,
-    this.lon
+    this.lon,
+    this.limit
   });
 
   String makrParameter(String? cursor, double lon, double lat){
     String params = "?yearMonthDay=${DateFormat('yyyy-MM-dd').format(yearMonthDay!)}";
-    // params += loadingArea!=null ? ("&loadingArea="+loadingArea!) : "";
-    // params += loadingRadius!=null ? ("&loadingArea="+loadingRadius!.toString()) : "";
+    //params += loadingArea!=null ? ("&loadingArea="+loadingArea!) : "";
+    params += loadingRadius!=null ? ("&loadingRadius="+loadingRadius!.toString()) : "";
     // params += unloadingArea!=null ? ("&loadingArea="+unloadingArea!) : "";
     // params += carModel!=null ? ("&loadingArea="+carModel!) : "";
     // params += carType!=null ? ("&loadingArea="+carType!) : "";
@@ -48,8 +51,9 @@ class OrderListParam {
     params += ("&lon="+lon.toString());
     params += ("&lat="+lat.toString());
     if(cursor!=null && cursor!=""){
-      params += "&cursor"+cursor;
+      params += "&cursor="+cursor;
     }
+    params += ("&limit="+limit.toString());
     return params;
   }
 }

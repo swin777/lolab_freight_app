@@ -10,11 +10,13 @@ class Header extends StatelessWidget {
       top: 4.0,
       bottom: 4.0,
     ),
+    this.selectDate,
     this.onPressed,
   }) : super(key: key);
 
   //static final _dateFormatter = DateFormat().add_yMMMM(); //DateFormat('yyyy-MM').format(now);
   final DateTime monthDate;
+  final DateTime? selectDate;
   final EdgeInsetsGeometry margin;
   final VoidCallback? onPressed;
 
@@ -29,7 +31,7 @@ class Header extends StatelessWidget {
         children: [
           Text(
             //_dateFormatter.format(monthDate),
-            DateFormat('yyyy년 MM월').format(monthDate),
+            DateFormat('yyyy년 MM월').format(selectDate??monthDate),
             style: theme.textTheme.subtitle1!,
           ),
           InkWell(

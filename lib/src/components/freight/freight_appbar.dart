@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lolab_freight_app/src/utils/util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../customAdvancedCalendar/controller.dart';
 import '../customAdvancedCalendar/widget.dart';
 import 'package:lolab_freight_app/src/controller/freight_controller.dart';
 
 class FreightAppBar extends StatelessWidget {
-  FreightAppBar({required this.configCallback});
+  FreightAppBar({Key? key, required this.configCallback}) : super(key: key);
 
   final FreightController controller = FreightController.to;
   final List<DateTime> events = [
@@ -17,13 +18,7 @@ class FreightAppBar extends StatelessWidget {
 
   Function configCallback;
 
-  List<Map<String, dynamic>> themaList = [
-    {"name": "축차", "icon": Icon(Icons.add_box, size: 18)},
-    {"name": "무진동", "icon": Icon(Icons.food_bank, size: 18)},
-    {"name": "리프트", "icon": Icon(Icons.add_box, size: 18)},
-    {"name": "냉장", "icon": Icon(Icons.add_box, size: 18)},
-    {"name": "냉동", "icon": Icon(Icons.add_box, size: 18)},
-  ];
+  
 
   Widget _menuMark(BuildContext context) {
     return SizedBox(
@@ -40,7 +35,12 @@ class FreightAppBar extends StatelessWidget {
           height: 22,
         ),
         onPressed: () async {
-          configCallback(context);
+          await configCallback(context);
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          controller.calendarVisible.value = prefs.getBool('isDateSort')!;
+          controller.themaList.clear();
+          //controller.themaList.add(item)
+          controller.getOrderList();
         },
       ),
     );
@@ -76,87 +76,36 @@ class FreightAppBar extends StatelessWidget {
       child: ButtonTheme(
         alignedDropdown: true,
         child: DropdownButton(
-            value: 10,
+            value: label=='상' ? controller.orderListParam.value.loadingRadius??10000 : controller.orderListParam.value.unloadingRadius??10000,
             underline: Container(height: 0,),
             borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-            onChanged: (int? value) {},
-            items: [
-              DropdownMenuItem(
-                value: 10,
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 12.0,
-                      backgroundColor: color, //Color(0xff696969),
-                      child: Text(
-                        label,
-                        style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ),
-                    const SizedBox(width: 6,),
-                    const Text(
-                      '주변10km',
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              DropdownMenuItem(
-                value: 20,
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 12.0,
-                      backgroundColor: color, //Color(0xff696969),
-                      child: Text(
-                        label,
-                        style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ),
-                    const SizedBox(width: 6,),
-                    const Text(
-                      '주변20km',
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              DropdownMenuItem(
-                value: 30,
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 12.0,
-                      backgroundColor: color, //Color(0xff696969),
-                      child: Text(
-                        label,
-                        style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ),
-                    const SizedBox(width: 6,),
-                    const Text(
-                      '의정부주변',
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
+            onChanged: (int? value) => controller.orderListParam.update((val) {label=='상' ? val?.loadingRadius=value : val?.unloadingRadius=value;}),
+            items: controller.radiusList.value.map((Map radius) => DropdownMenuItem(
+              value: radius['value'] as int,
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 12.0,
+                    backgroundColor: color, //Color(0xff696969),
+                    child: Text(
+                      label,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                    )
+                  ),
+                  const SizedBox(width: 6,),
+                  Text(
+                    radius['name'] as String,
+                    style: const TextStyle(
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold),
+                  ),
+                ],
               )
-            ]),
+            )).toList()
+          ),
       ),
     );
   }
@@ -193,41 +142,51 @@ class FreightAppBar extends StatelessWidget {
       //height: 170,
       child: Column(
         children: [
-          Row(
-            children: [
-              _menuMark(context),
-              SizedBox(
-                height: 40,
-                width: MediaQuery.of(context).size.width-24-34,
-                child: ListView(
-                  controller: scrollController,
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    const SizedBox(width: 10.0),
-                    _bookMark(),
-                    const SizedBox(width: 10.0),
-                    _dropDown('상', const Color(0xff63512b)),
-                    const SizedBox(width: 10.0),
-                    _dropDown('하', const Color(0xff918772)),
-                    const SizedBox(width: 10.0),
-                    ...themaList.map((ele) {
-                      return Row(children: [
-                        _themaBtnWidget(ele["name"], ele["icon"]),
-                        const SizedBox(width: 10.0)
-                      ]);
-                    }).toList()
-                  ],
-                )
-              ),
-            ],
+          Obx(()=>
+            Row(
+              children: [
+                _menuMark(context),
+                SizedBox(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width-24-34,
+                  child: ListView(
+                    controller: scrollController,
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      const SizedBox(width: 10.0),
+                      _bookMark(),
+                      const SizedBox(width: 10.0),
+                      _dropDown('상', const Color(0xff63512b)),
+                      const SizedBox(width: 10.0),
+                      _dropDown('하', const Color(0xff918772)),
+                      const SizedBox(width: 10.0),
+                      ...controller.themaList.map((ele) {
+                        return Row(children: [
+                          _themaBtnWidget(ele["name"], ele["icon"]),
+                          const SizedBox(width: 10.0)
+                        ]);
+                      }).toList()
+                    ],
+                  )
+                ),
+              ],
+            )
           ),
           line(),
-          AdvancedCalendar(
-            controller: _calendarControllerToday,
-            events: events,
+          Obx(() => 
+            controller.calendarVisible.value 
+            ?
+            AdvancedCalendar(
+              controller: _calendarControllerToday,
+              events: events,
+            )
+            :
+            const SizedBox(height: 0, width: 0,)
           ),
         ],
       ),
     );
   }
 }
+
+

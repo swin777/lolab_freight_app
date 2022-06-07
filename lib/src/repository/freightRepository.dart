@@ -20,14 +20,17 @@ class FreigntRepository extends GetConnect {
   }
 
   Future<OrderList?> orderList({OrderListParam? orderListParam, String? cursor}) async{
-    print("orderList call");
-    Position position;
+    Position? position;
     try{
       position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation, forceAndroidLocationManager: false);
+      if(position.longitude<0){
+        
+      }
     }catch(e){
-      position = Position.fromMap({'longitude':127.02940905611158, 'latitude':37.47087751421342}); //KT연구개발센터
+      // position = Position.fromMap({'longitude':127.02940905611158, 'latitude':37.47087751421342}); //KT연구개발센터
     }
-    String url = "/v1/orders/freight${orderListParam!.makrParameter(cursor, position.longitude, position.latitude)}";
+    String url = "/v1/orders/freight${orderListParam!.makrParameter(cursor, position!=null ? position.longitude : 127.02940905611158, position!=null ? position.latitude : 37.47087751421342)}";
+    print(url);
     final response = await get(url, headers: globalHeaders);
     if (response.status.hasError) {
       return Future.error(response.statusText!);

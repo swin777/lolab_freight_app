@@ -27,6 +27,7 @@ class Freight extends StatelessWidget {
       builder: (context) => FreightDetail(orderId:orderId!)
     );
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +43,14 @@ class Freight extends StatelessWidget {
                   flexibleSpace: FreightAppBar(configCallback:goConfig),
                   floating: true,
                   snap: true,
-                  expandedHeight: 173,
-                  collapsedHeight: 173,
+                  expandedHeight: controller.calendarVisible.value ? 173 : 173-100,
+                  collapsedHeight: controller.calendarVisible.value ? 173 : 173-100,
                 ),
                 controller.orderList!.value.orders!.isEmpty
                 ?
                 SliverToBoxAdapter(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height/2,
+                    height: Get.height/2,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
