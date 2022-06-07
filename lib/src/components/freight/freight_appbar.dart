@@ -18,8 +18,6 @@ class FreightAppBar extends StatelessWidget {
 
   Function configCallback;
 
-  
-
   Widget _menuMark(BuildContext context) {
     return SizedBox(
       width: 34,
@@ -38,7 +36,10 @@ class FreightAppBar extends StatelessWidget {
           await configCallback(context);
           SharedPreferences prefs = await SharedPreferences.getInstance();
           controller.calendarVisible.value = prefs.getBool('isDateSort')!;
-          controller.themaList.clear();
+          controller.themaList.value = prefs
+              .getStringList('carOption')!
+              .map((e) => {"name": e})
+              .toList();
           //controller.themaList.add(item)
           controller.getOrderList();
         },
@@ -76,41 +77,50 @@ class FreightAppBar extends StatelessWidget {
       child: ButtonTheme(
         alignedDropdown: true,
         child: DropdownButton(
-            value: label=='상' ? controller.orderListParam.value.loadingRadius??10000 : controller.orderListParam.value.unloadingRadius??10000,
-            underline: Container(height: 0,),
+            value: label == '상'
+                ? controller.orderListParam.value.loadingRadius ?? 10000
+                : controller.orderListParam.value.unloadingRadius ?? 10000,
+            underline: Container(
+              height: 0,
+            ),
             borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-            onChanged: (int? value) => controller.orderListParam.update((val) {label=='상' ? val?.loadingRadius=value : val?.unloadingRadius=value;}),
-            items: controller.radiusList.value.map((Map radius) => DropdownMenuItem(
-              value: radius['value'] as int,
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 12.0,
-                    backgroundColor: color, //Color(0xff696969),
-                    child: Text(
-                      label,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                    )
-                  ),
-                  const SizedBox(width: 6,),
-                  Text(
-                    radius['name'] as String,
-                    style: const TextStyle(
-                      color: Colors.black54,
-                      fontWeight: FontWeight.bold),
-                  ),
-                ],
-              )
-            )).toList()
-          ),
+            onChanged: (int? value) => controller.orderListParam.update((val) {
+                  label == '상'
+                      ? val?.loadingRadius = value
+                      : val?.unloadingRadius = value;
+                }),
+            items: controller.radiusList.value
+                .map((Map radius) => DropdownMenuItem(
+                    value: radius['value'] as int,
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                            radius: 12.0,
+                            backgroundColor: color, //Color(0xff696969),
+                            child: Text(
+                              label,
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Text(
+                          radius['name'] as String,
+                          style: const TextStyle(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    )))
+                .toList()),
       ),
     );
   }
 
-  Widget _themaBtnWidget(String text, Icon icon) {
+  Widget _themaBtnWidget(String text) {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -122,9 +132,7 @@ class FreightAppBar extends StatelessWidget {
         child: Text(
           text,
           style: const TextStyle(
-              color: Colors.black54,
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+              color: Colors.black54, fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
     );
@@ -132,61 +140,59 @@ class FreightAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AdvancedCalendarController _calendarControllerToday = AdvancedCalendarController.custom(controller.orderListParam.value.yearMonthDay!);
+    AdvancedCalendarController _calendarControllerToday =
+        AdvancedCalendarController.custom(
+            controller.orderListParam.value.yearMonthDay!);
     ScrollController scrollController = ScrollController();
     _calendarControllerToday.addListener(() {
-      controller.orderListParam.update((val) {val!.yearMonthDay = _calendarControllerToday.value;});
+      controller.orderListParam.update((val) {
+        val!.yearMonthDay = _calendarControllerToday.value;
+      });
     });
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       //height: 170,
       child: Column(
         children: [
-          Obx(()=>
-            Row(
-              children: [
-                _menuMark(context),
-                SizedBox(
-                  height: 40,
-                  width: MediaQuery.of(context).size.width-24-34,
-                  child: ListView(
-                    controller: scrollController,
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      const SizedBox(width: 10.0),
-                      _bookMark(),
-                      const SizedBox(width: 10.0),
-                      _dropDown('상', const Color(0xff63512b)),
-                      const SizedBox(width: 10.0),
-                      _dropDown('하', const Color(0xff918772)),
-                      const SizedBox(width: 10.0),
-                      ...controller.themaList.map((ele) {
-                        return Row(children: [
-                          _themaBtnWidget(ele["name"], ele["icon"]),
-                          const SizedBox(width: 10.0)
-                        ]);
-                      }).toList()
-                    ],
-                  )
-                ),
-              ],
-            )
-          ),
+          Obx(() => Row(
+                children: [
+                  _menuMark(context),
+                  SizedBox(
+                      height: 40,
+                      width: MediaQuery.of(context).size.width - 24 - 34,
+                      child: ListView(
+                        controller: scrollController,
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          const SizedBox(width: 10.0),
+                          _bookMark(),
+                          const SizedBox(width: 10.0),
+                          _dropDown('상', const Color(0xff63512b)),
+                          const SizedBox(width: 10.0),
+                          _dropDown('하', const Color(0xff918772)),
+                          const SizedBox(width: 10.0),
+                          ...controller.themaList.map((ele) {
+                            return Row(children: [
+                              _themaBtnWidget(ele["name"]),
+                              const SizedBox(width: 10.0)
+                            ]);
+                          }).toList()
+                        ],
+                      )),
+                ],
+              )),
           line(),
-          Obx(() => 
-            controller.calendarVisible.value 
-            ?
-            AdvancedCalendar(
-              controller: _calendarControllerToday,
-              events: events,
-            )
-            :
-            const SizedBox(height: 0, width: 0,)
-          ),
+          Obx(() => controller.calendarVisible.value
+              ? AdvancedCalendar(
+                  controller: _calendarControllerToday,
+                  events: events,
+                )
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                )),
         ],
       ),
     );
   }
 }
-
-

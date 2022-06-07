@@ -42,6 +42,7 @@ class _FreightConfigState extends State<FreightConfig> {
       _minDistance = (_prefs.getInt('minDistance') ?? 0);
       _maxDistance = (_prefs.getInt('maxDistance') ?? 0);
       _isDateSort = (_prefs.getBool('isDateSort') ?? false);
+      _carOption = (_prefs.getStringList('carOption') ?? []);
       _isHandWorkExcept = (_prefs.getBool('isHandWorkExcept') ?? false);
     });
   }
@@ -418,6 +419,11 @@ class _FreightConfigState extends State<FreightConfig> {
     await prefs.setBool(key, value);
   }
 
+  _setStringList(key, value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(key, value);
+  }
+
   Widget HandWorkWidget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -455,275 +461,366 @@ class _FreightConfigState extends State<FreightConfig> {
       ),
     );
   }
-}
 
-Widget PriceContent(BuildContext context) {
-  final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
+  Widget PriceContent(BuildContext context) {
+    final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
 
-  return Container(
-    // margin: const EdgeInsets.only(top: 50.0, left: 12, right: 12),
-    child: SingleChildScrollView(
-      child: Column(children: [
-        Container(
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          decoration: BoxDecoration(
-            color: Color(0xffffffff),
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: Theme(
-            //new
-            data: theme,
-            child: ExpansionTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    "최소 배송 요금",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                        color: Color(0xff000000)),
-                  ),
-                  Text(
-                    '요금 제한 없음',
-                    style: TextStyle(fontSize: 14, color: Color(0xff666666)),
-                  ),
-                ],
-              ),
-              children: [
-                lineBottom(),
-                Column(
-                  children: [
-                    OutlinedButton(
-                      style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsets>(
-                              const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 100)),
-                          foregroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xff005e35)),
-                          side: MaterialStateProperty.all(BorderSide(
-                            width: 1.0,
-                            color: Color(0xff005e35),
-                            style: BorderStyle.solid,
-                          ))),
-                      onPressed: () {},
-                      child: Text('최소 요금 설정',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          )),
+    return Container(
+      // margin: const EdgeInsets.only(top: 50.0, left: 12, right: 12),
+      child: SingleChildScrollView(
+        child: Column(children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            decoration: BoxDecoration(
+              color: Color(0xffffffff),
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Theme(
+              //new
+              data: theme,
+              child: ExpansionTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text(
+                      "최소 배송 요금",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                          color: Color(0xff000000)),
+                    ),
+                    Text(
+                      '요금 제한 없음',
+                      style: TextStyle(fontSize: 14, color: Color(0xff666666)),
                     ),
                   ],
-                )
-              ],
-            ),
-          ),
-        ),
-      ]),
-    ),
-  );
-}
-
-Widget OptionContent(BuildContext context) {
-  final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
-
-  return Container(
-    // margin: const EdgeInsets.only(top: 50.0, left: 12, right: 12),
-    child: SingleChildScrollView(
-      child: Column(children: [
-        Container(
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          decoration: BoxDecoration(
-            color: Color(0xffffffff),
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: Theme(
-            //new
-            data: theme,
-            child: ExpansionTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    "내 차량 옵션",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18,
-                        color: Color(0xff000000)),
-                  ),
-                  Text(
-                    '모든 옵션 적용',
-                    style: TextStyle(fontSize: 14, color: Color(0xff666666)),
-                  ),
+                ),
+                children: [
+                  lineBottom(),
+                  Column(
+                    children: [
+                      OutlinedButton(
+                        style: ButtonStyle(
+                            padding: MaterialStateProperty.all<EdgeInsets>(
+                                const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 100)),
+                            foregroundColor: MaterialStateProperty.all<Color>(
+                                Color(0xff005e35)),
+                            side: MaterialStateProperty.all(BorderSide(
+                              width: 1.0,
+                              color: Color(0xff005e35),
+                              style: BorderStyle.solid,
+                            ))),
+                        onPressed: () {},
+                        child: Text('최소 요금 설정',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ),
+                    ],
+                  )
                 ],
               ),
-              children: [
-                line(),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ButtonTheme(
-                            minWidth: 69.0,
-                            height: 34.0,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: new Text(
-                                "25톤",
-                                style: new TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff005e35),
-                                ),
-                              ),
-                              // borderSide: BorderSide(
-                              //   color: Color(0xff005e35),
-                              //   width: 1.0,
-                              // ),
-                              // shape: StadiumBorder(),
-                            ),
-                          ),
-                          ButtonTheme(
-                            minWidth: 69.0,
-                            height: 34.0,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: new Text(
-                                "카고",
-                                style: new TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff005e35),
-                                ),
-                              ),
-                              // borderSide: BorderSide(
-                              //   color: Color(0xff005e35),
-                              //   width: 1.0,
-                              // ),
-                              // shape: StadiumBorder(),
-                            ),
-                          ),
-                          ButtonTheme(
-                            minWidth: 69.0,
-                            height: 34.0,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: new Text(
-                                "축차",
-                                style: new TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff005e35),
-                                ),
-                              ),
-                              // borderSide: BorderSide(
-                              //   color: Color(0xff005e35),
-                              //   width: 1.0,
-                              // ),
-                              // shape: StadiumBorder(),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ButtonTheme(
-                            minWidth: 69.0,
-                            height: 34.0,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: new Text(
-                                "무진동",
-                                style: new TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff005e35),
-                                ),
-                              ),
-                              // borderSide: BorderSide(
-                              //   color: Color(0xff005e35),
-                              //   width: 1.0,
-                              // ),
-                              // shape: StadiumBorder(),
-                            ),
-                          ),
-                          ButtonTheme(
-                            minWidth: 69.0,
-                            height: 34.0,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: new Text(
-                                "리프트",
-                                style: new TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff005e35),
-                                ),
-                              ),
-                              // borderSide: BorderSide(
-                              //   color: Color(0xff005e35),
-                              //   width: 1.0,
-                              // ),
-                              // shape: StadiumBorder(),
-                            ),
-                          ),
-                          ButtonTheme(
-                            minWidth: 69.0,
-                            height: 34.0,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: new Text(
-                                "냉장",
-                                style: new TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff005e35),
-                                ),
-                              ),
-                              // borderSide: BorderSide(
-                              //   color: Color(0xff005e35),
-                              //   width: 1.0,
-                              // ),
-                              // shape: StadiumBorder(),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ButtonTheme(
-                            minWidth: 69.0,
-                            height: 34.0,
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: new Text(
-                                "냉동",
-                                style: new TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff005e35),
-                                ),
-                              ),
-                              // borderSide: BorderSide(
-                              //   color: Color(0xff005e35),
-                              //   width: 1.0,
-                              // ),
-                              // shape: StadiumBorder(),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
             ),
           ),
-        ),
-      ]),
-    ),
-  );
+        ]),
+      ),
+    );
+  }
+
+  Widget OptionContent(BuildContext context) {
+    final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
+
+    return Container(
+      // margin: const EdgeInsets.only(top: 50.0, left: 12, right: 12),
+      child: SingleChildScrollView(
+        child: Column(children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            decoration: BoxDecoration(
+              color: Color(0xffffffff),
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Theme(
+              //new
+              data: theme,
+              child: ExpansionTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text(
+                      "내 차량 옵션",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                          color: Color(0xff000000)),
+                    ),
+                    Text(
+                      '모든 옵션 적용',
+                      style: TextStyle(fontSize: 14, color: Color(0xff666666)),
+                    ),
+                  ],
+                ),
+                children: [
+                  line(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 15),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ButtonTheme(
+                              minWidth: 69.0,
+                              height: 34.0,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _carOption.contains('리프트')
+                                        ? _carOption.removeWhere(
+                                            (item) => item == '리프트')
+                                        : _carOption.add('리프트');
+                                    _setStringList('carOption', _carOption);
+                                  });
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: _carOption.contains('리프트')
+                                      ? Color.fromARGB(255, 255, 250, 175)
+                                      : Colors.white,
+                                ),
+                                child: new Text(
+                                  "리프트",
+                                  style: new TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff005e35),
+                                  ),
+                                ),
+                                // borderSide: BorderSide(
+                                //   color: Color(0xff005e35),
+                                //   width: 1.0,
+                                // ),
+                                // shape: StadiumBorder(),
+                              ),
+                            ),
+                            ButtonTheme(
+                              minWidth: 69.0,
+                              height: 34.0,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _carOption.contains('무진동')
+                                        ? _carOption.removeWhere(
+                                            (item) => item == '무진동')
+                                        : _carOption.add('무진동');
+                                    _setStringList('carOption', _carOption);
+                                  });
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: _carOption.contains('무진동')
+                                      ? Color.fromARGB(255, 255, 250, 175)
+                                      : Colors.white,
+                                ),
+                                child: new Text(
+                                  "무진동",
+                                  style: new TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff005e35),
+                                  ),
+                                ),
+                                // borderSide: BorderSide(
+                                //   color: Color(0xff005e35),
+                                //   width: 1.0,
+                                // ),
+                                // shape: StadiumBorder(),
+                              ),
+                            ),
+                            ButtonTheme(
+                              minWidth: 69.0,
+                              height: 34.0,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _carOption.contains('장축')
+                                        ? _carOption
+                                            .removeWhere((item) => item == '장축')
+                                        : _carOption.add('장축');
+                                    _setStringList('carOption', _carOption);
+                                  });
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: _carOption.contains('장축')
+                                      ? Color.fromARGB(255, 255, 250, 175)
+                                      : Colors.white,
+                                ),
+                                child: new Text(
+                                  "장축",
+                                  style: new TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff005e35),
+                                  ),
+                                ),
+                                // borderSide: BorderSide(
+                                //   color: Color(0xff005e35),
+                                //   width: 1.0,
+                                // ),
+                                // shape: StadiumBorder(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ButtonTheme(
+                              minWidth: 69.0,
+                              height: 34.0,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _carOption.contains('플러스')
+                                        ? _carOption.removeWhere(
+                                            (item) => item == '플러스')
+                                        : _carOption.add('플러스');
+                                    _setStringList('carOption', _carOption);
+                                  });
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: _carOption.contains('플러스')
+                                      ? Color.fromARGB(255, 255, 250, 175)
+                                      : Colors.white,
+                                ),
+                                child: new Text(
+                                  "플러스",
+                                  style: new TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff005e35),
+                                  ),
+                                ),
+                                // borderSide: BorderSide(
+                                //   color: Color(0xff005e35),
+                                //   width: 1.0,
+                                // ),
+                                // shape: StadiumBorder(),
+                              ),
+                            ),
+                            ButtonTheme(
+                              minWidth: 69.0,
+                              height: 34.0,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _carOption.contains('플러스장축')
+                                        ? _carOption.removeWhere(
+                                            (item) => item == '플러스장축')
+                                        : _carOption.add('플러스장축');
+                                    _setStringList('carOption', _carOption);
+                                  });
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: _carOption.contains('플러스장축')
+                                      ? Color.fromARGB(255, 255, 250, 175)
+                                      : Colors.white,
+                                ),
+                                child: new Text(
+                                  "플러스장축",
+                                  style: new TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff005e35),
+                                  ),
+                                ),
+                                // borderSide: BorderSide(
+                                //   color: Color(0xff005e35),
+                                //   width: 1.0,
+                                // ),
+                                // shape: StadiumBorder(),
+                              ),
+                            ),
+                            ButtonTheme(
+                              minWidth: 69.0,
+                              height: 34.0,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _carOption.contains('하이탑')
+                                        ? _carOption.removeWhere(
+                                            (item) => item == '하이탑')
+                                        : _carOption.add('하이탑');
+                                    _setStringList('carOption', _carOption);
+                                  });
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: _carOption.contains('하이탑')
+                                      ? Color.fromARGB(255, 255, 250, 175)
+                                      : Colors.white,
+                                ),
+                                child: new Text(
+                                  "하이탑",
+                                  style: new TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff005e35),
+                                  ),
+                                ),
+                                // borderSide: BorderSide(
+                                //   color: Color(0xff005e35),
+                                //   width: 1.0,
+                                // ),
+                                // shape: StadiumBorder(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ButtonTheme(
+                              minWidth: 69.0,
+                              height: 34.0,
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _carOption.contains('로우탑')
+                                        ? _carOption.removeWhere(
+                                            (item) => item == '로우탑')
+                                        : _carOption.add('로우탑');
+                                    _setStringList('carOption', _carOption);
+                                  });
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: _carOption.contains('로우탑')
+                                      ? Color.fromARGB(255, 255, 250, 175)
+                                      : Colors.white,
+                                ),
+                                child: new Text(
+                                  "로우탑",
+                                  style: new TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff005e35),
+                                  ),
+                                ),
+                                // borderSide: BorderSide(
+                                //   color: Color(0xff005e35),
+                                //   width: 1.0,
+                                // ),
+                                // shape: StadiumBorder(),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
 }
