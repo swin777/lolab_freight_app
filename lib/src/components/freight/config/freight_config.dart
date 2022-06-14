@@ -212,18 +212,25 @@ class _FreightConfigState extends State<FreightConfig> {
               child: ExpansionTile(
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
+                  children: [
+                    const Text(
                       "배송 거리",
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 18,
                           color: Color(0xff000000)),
                     ),
-                    Text(
-                      '거리 제한 없음',
-                      style: TextStyle(fontSize: 14, color: Color(0xff666666)),
-                    ),
+                    _minDistance > 0 && _maxDistance > 0
+                        ? Text(
+                            '${_minDistance}km ~ ${_maxDistance}km',
+                            style: const TextStyle(
+                                fontSize: 14, color: Color(0xff666666)),
+                          )
+                        : const Text(
+                            '거리 제한 없음',
+                            style: TextStyle(
+                                fontSize: 14, color: Color(0xff666666)),
+                          ),
                   ],
                 ),
                 children: [
