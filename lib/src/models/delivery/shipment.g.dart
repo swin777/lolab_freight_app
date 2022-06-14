@@ -18,13 +18,16 @@ Shipment _$DeliveryFromJson(Map<String, dynamic> json) => Shipment(
           : DateTime.fromMicrosecondsSinceEpoch(json['loadingDateTime'] as int)
       ..unloadingDateTime = json['unloadingDateTime'] == null
           ? null
-          : DateTime.fromMicrosecondsSinceEpoch(json['unloadingDateTime'] as int)
+          : DateTime.fromMicrosecondsSinceEpoch(
+              json['unloadingDateTime'] as int)
       ..loadingCompletedDateTime = json['loadingCompletedDateTime'] == null
           ? null
-          : DateTime.fromMicrosecondsSinceEpoch(json['loadingCompletedDateTime'] as int)
+          : DateTime.fromMicrosecondsSinceEpoch(
+              json['loadingCompletedDateTime'] as int)
       ..unloadingCompletedDateTime = json['unloadingCompletedDateTime'] == null
           ? null
-          : DateTime.fromMicrosecondsSinceEpoch(json['unloadingCompletedDateTime'] as int)
+          : DateTime.fromMicrosecondsSinceEpoch(
+              json['unloadingCompletedDateTime'] as int)
       ..deliveryStatus = json['deliveryStatus'] as String?
       ..loadingAddress = json['loadingAddress'] as String?
       ..loadingDetailAddress = json['loadingDetailAddress'] as String?

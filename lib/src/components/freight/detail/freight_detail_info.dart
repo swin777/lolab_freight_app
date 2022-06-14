@@ -5,8 +5,11 @@ import 'package:lolab_freight_app/src/controller/freight_detail_controller.dart'
 import 'package:lolab_freight_app/src/models/freight/order.dart';
 import 'package:lolab_freight_app/src/utils/util.dart';
 
+import '../../../utils/code.dart';
+
 class FreightDetailInfo extends StatelessWidget {
-  FreightDetailInfo({Key? key, required this.close, required this.orderId}) : super(key: key);
+  FreightDetailInfo({Key? key, required this.close, required this.orderId})
+      : super(key: key);
 
   //FreightDetailController controller = FreightDetailController.to;
   FreightDetailController controller = Get.put(FreightDetailController());
@@ -37,92 +40,107 @@ class FreightDetailInfo extends StatelessWidget {
   //       child: Text("ssss"));
   // }
 
-  String strPackagingList(List<PackagingList>? packagingList){
-    if(packagingList!=null && packagingList.isNotEmpty){
-      if(packagingList[0].packagingType=='팔레트'){
-        return packagingList[0].freightLoadingCount.toString() + ' ' + packagingList[0].packagingType!;
-      }else{
-        return packagingList[0].freightLoadingCount.toString() + ' ' + packagingList[0].freightLoadingSize! +' ' + packagingList[0].packagingType!;
-      } 
+  String strPackagingList(List<PackagingList>? packagingList) {
+    if (packagingList != null && packagingList.isNotEmpty) {
+      if (packagingList[0].packagingType == '팔레트') {
+        return packagingList[0].freightLoadingCount.toString() +
+            ' ' +
+            packagingList[0].packagingType!;
+      } else {
+        return packagingList[0].freightLoadingCount.toString() +
+            ' ' +
+            packagingList[0].freightLoadingSize! +
+            ' ' +
+            packagingList[0].packagingType!;
+      }
     }
     return "";
   }
 
-  String strCarOption(List<String>? carOptions){
-    if(carOptions!=null && carOptions.isNotEmpty){
-      return carOptions.reduce((previousValue, element) => previousValue+', '+element);
+  String strCarOption(List<String>? carOptions) {
+    if (carOptions != null && carOptions.isNotEmpty) {
+      var res = '';
+      carOptions.forEach((e) => res += convertString(carOption, e) + ' ');
+      return res;
     }
     return "";
   }
 
   Widget workMehod() {
     return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xfff2f4f7),
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(4.0),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child: Obx(() => Column(
-        children: [
-          Row(
-            children: [
-              Image.asset("assets/images/icon_move.png",width: 24,height: 24),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  '상차 ${controller.order?.value.loadingFreightMethod} > 하차 ${controller.order?.value.unloadingFreightMethod}',
-                  style: const TextStyle(color: Color(0xff666666), fontSize: 16),
+        decoration: BoxDecoration(
+          color: const Color(0xfff2f4f7),
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Obx(() => Column(
+              children: [
+                Row(
+                  children: [
+                    Image.asset("assets/images/icon_move.png",
+                        width: 24, height: 24),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        '상차 ${convertString(freightMethod, controller.order?.value.loadingFreightMethod ?? '')} > 하차 ${convertString(freightMethod, controller.order?.value.unloadingFreightMethod ?? '')}',
+                        style: const TextStyle(
+                            color: Color(0xff666666), fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Image.asset("assets/images/icon_box.png",width: 24,height: 24),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  '${strPackagingList(controller.order?.value.packagingLists)} / ${controller.order?.value.carModel}',
-                  style: const TextStyle(color: Color(0xff666666), fontSize: 16),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Image.asset("assets/images/icon_box.png",
+                        width: 24, height: 24),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        '${strPackagingList(controller.order?.value.packagingLists)} / ${convertString(carModel, controller.order?.value.carModel ?? '')}',
+                        style: const TextStyle(
+                            color: Color(0xff666666), fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          Row(
-            children: [
-              Image.asset("assets/images/icon_truck.png",width: 24,height: 24),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  strCarOption(controller.order?.value.carOptions),
-                  style: TextStyle(color: Color(0xff666666), fontSize: 16),
+                const SizedBox(
+                  height: 12,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          Row(
-            children: [
-              Image.asset("assets/images/icon_memo.png",width: 24,height: 24),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  controller.order?.value.otherFreightInfo??"",
-                  style: const TextStyle(color: Color(0xff666666), fontSize: 16),
+                Row(
+                  children: [
+                    Image.asset("assets/images/icon_truck.png",
+                        width: 24, height: 24),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        strCarOption(controller.order?.value.carOptions),
+                        style:
+                            TextStyle(color: Color(0xff666666), fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        ],
-      ))
-    );
+                const SizedBox(
+                  height: 12,
+                ),
+                Row(
+                  children: [
+                    Image.asset("assets/images/icon_memo.png",
+                        width: 24, height: 24),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        controller.order?.value.otherFreightInfo ?? "",
+                        style: const TextStyle(
+                            color: Color(0xff666666), fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )));
   }
 
   Widget expense() {
@@ -132,25 +150,33 @@ class FreightDetailInfo extends StatelessWidget {
       children: [
         Row(
           children: [
-            Image.asset("assets/images/icon_money_black_18.png",width: 18,height: 18),
-            const SizedBox(width: 8,),
-            const Padding(
-              padding: EdgeInsets.only(top: 1),
-              child: Text('배송요금', style: TextStyle(color: Colors.black, fontSize: 14))
+            Image.asset("assets/images/icon_money_black_18.png",
+                width: 18, height: 18),
+            const SizedBox(
+              width: 8,
             ),
+            const Padding(
+                padding: EdgeInsets.only(top: 1),
+                child: Text('배송요금',
+                    style: TextStyle(color: Colors.black, fontSize: 14))),
           ],
         ),
         Container(
-          padding: const EdgeInsets.only(top: 3),
-          child: Obx(() => Row(
-              children: [
-                Text(wonString(controller.order?.value.deliveryCharge), style: const TextStyle(color: Colors.black, fontSize: 24)),
-                const SizedBox(width: 2),
-                Text(controller.order?.value.deliveryCharge!=null ? '원' : '', style: const TextStyle(color: Colors.black, fontSize: 18)),
-              ],
-            )
-          )
-        )
+            padding: const EdgeInsets.only(top: 3),
+            child: Obx(() => Row(
+                  children: [
+                    Text(wonString(controller.order?.value.deliveryCharge),
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 24)),
+                    const SizedBox(width: 2),
+                    Text(
+                        controller.order?.value.deliveryCharge != null
+                            ? '원'
+                            : '',
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 18)),
+                  ],
+                )))
       ],
     );
   }

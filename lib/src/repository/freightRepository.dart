@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:lolab_freight_app/src/models/freight/order.dart';

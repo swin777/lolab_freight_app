@@ -39,7 +39,6 @@ class FreightController extends GetxController {
     // themaList.add({"name": "무진동", "icon": Icon(Icons.food_bank, size: 18)});
     //themaList.value = prefs.getStringList
     if (prefs.getStringList('carOption') != null) {
-      print(prefs.getStringList('carOption')!.map((e) => {"name": e}).toList());
       themaList.value =
           prefs.getStringList('carOption')!.map((e) => {"name": e}).toList();
     }

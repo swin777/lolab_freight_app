@@ -10,19 +10,23 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       orderId: json['orderId'] as String?,
       registerDateTime: json['registerDateTime'] == null
           ? null
-          : DateTime.fromMillisecondsSinceEpoch(json['registerDateTime'] as int),
+          : DateTime.fromMillisecondsSinceEpoch(
+              json['registerDateTime'] as int),
       loadingDateTime: json['loadingDateTime'] == null
           ? null
           : DateTime.fromMillisecondsSinceEpoch(json['loadingDateTime'] as int),
       unloadingDateTime: json['unloadingDateTime'] == null
           ? null
-          : DateTime.fromMillisecondsSinceEpoch(json['unloadingDateTime'] as int),
+          : DateTime.fromMillisecondsSinceEpoch(
+              json['unloadingDateTime'] as int),
       loadingCompletedDateTime: json['loadingCompletedDateTime'] == null
           ? null
-          : DateTime.fromMillisecondsSinceEpoch(json['loadingCompletedDateTime'] as int),
+          : DateTime.fromMillisecondsSinceEpoch(
+              json['loadingCompletedDateTime'] as int),
       unloadingCompletedDateTime: json['unloadingCompletedDateTime'] == null
           ? null
-          : DateTime.fromMillisecondsSinceEpoch(json['unloadingCompletedDateTime'] as int),
+          : DateTime.fromMillisecondsSinceEpoch(
+              json['unloadingCompletedDateTime'] as int),
       loadingAddress: json['loadingAddress'] as String?,
       loadingDetailAddress: json['loadingDetailAddress'] as String?,
       unloadingAddress: json['unloadingAddress'] as String?,
